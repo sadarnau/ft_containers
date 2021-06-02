@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 17:57:00 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/02 17:08:01 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:34:18 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,5 +246,23 @@ int	main ()
 	assign();
 	push();
 
+	std::cout << "\n\ninsert 5 in begin() :";
+	ft::list<int> l3((size_t)10, 42);
+	std::list<int> l4((size_t)10, 42);
+	ft::list<int>::iterator it = l3.begin();
+	std::list<int>::iterator it2 = l4.begin();
+	l3.insert(it, 5);
+	l4.insert(it2, 5);
+	print_list(l4);
+	print_Mylist(l3);
+	it++;
+	it++;
+	it2++;
+	it2++;
+	std::cout << "\ninsert 5 in 4th position";
+	l3.insert(it, 5);
+	l4.insert(it2, 5);
+	print_list(l4);
+	print_Mylist(l3);
 	return 0;
 }

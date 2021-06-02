@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/02 17:07:56 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:58:51 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ namespace ft
 			return ;
 		}
 		
-		//(destructor) :
+	//(destructor) :
 
 		~list( void ) { return ; }
 		
-		//operator= :
+	//operator= :
 
 		list & operator=( list const & rhs )
 		{
@@ -246,7 +246,20 @@ namespace ft
 			return ;
 		}
 
-		iterator insert (iterator position, const value_type& val);
+		iterator insert (iterator position, const value_type& val)
+		{
+			node<value_type>	*tmp = new node<value_type>;
+
+			position.node()->prev->next = tmp;
+			tmp->next = position.node();
+			tmp->prev = position.node()->prev;
+			position.node()->prev = tmp;
+
+			tmp->data = val;
+
+			return ( tmp );
+		}
+
 		void insert (iterator position, size_type n, const value_type& val);
 		template <class InputIterator>
     	void insert (iterator position, InputIterator first, InputIterator last);

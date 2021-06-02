@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/02 17:07:48 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/02 17:30:10 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ namespace ft
 			listIterator( const listIterator &rhs ) { *this = rhs; };
 			listIterator( pointer ptr ) : _ptr( ptr ) { };
 			~listIterator( void ) {};
-
+			
+			pointer node(void) const
+			{
+				return (_ptr);
+			};
+			
 			listIterator &operator=( const listIterator &rhs )
 			{
 				this->_ptr = rhs._ptr;
