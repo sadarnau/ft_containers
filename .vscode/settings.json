@@ -16,6 +16,7 @@
         "string_view": "cpp",
         "unordered_map": "cpp",
         "vector": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "algorithm": "cpp"
     }
 }
