@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/03 14:46:19 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/03 16:00:48 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ namespace ft
 		typedef size_t					size_type;
 		typedef listIterator<T>			iterator;
 		typedef constListIterator<T>	const_iterator;
-		// typedef revListIterator<T>		reverse_iterator;
-		// typedef constRevListIterator<T>	const_reverse_iterator;
+		typedef revListIterator<T>		reverse_iterator;
+		typedef constRevListIterator<T>	const_reverse_iterator;
 
 
 	private:
@@ -103,7 +103,14 @@ namespace ft
 		
 	//(destructor) :
 
-		~list( void ) { return ; }
+		~list( void )
+		{				
+			clear();
+			delete this->_head;
+			delete this->_tail;
+			
+			return ; 
+		}
 		
 	//operator= :
 
@@ -124,11 +131,10 @@ namespace ft
 		const_iterator	begin(void) const	{ return( const_iterator( this->_head->next )); }
 		iterator		end(void) 			{ return( iterator( this->_tail )); }
 		const_iterator	end(void) const		{ return( const_iterator( this->_tail )); }
-		
-		// reverse_iterator rbegin()	{};
-		// const_reverse_iterator rbegin() const	{};
-		// reverse_iterator rend()	{};
-		// const_reverse_iterator rend() const	{};
+		reverse_iterator rbegin()				{ return( reverse_iterator( this->_tail->prev )); }
+		const_reverse_iterator rbegin() const	{ return( const_reverse_iterator( this->_tail->prev )); }
+		reverse_iterator rend()					{ return ( reverse_iterator( this->_head )); }
+		const_reverse_iterator rend() const		{ return( const_reverse_iterator( this->head )); }
 
 	/*
 		CAPACITY

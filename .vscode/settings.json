@@ -17,6 +17,10 @@
         "unordered_map": "cpp",
         "vector": "cpp",
         "memory": "cpp",
-        "algorithm": "cpp"
-    }
+        "algorithm": "cpp",
+        "__node_handle": "cpp",
+        "memory_resource": "cpp",
+        "sstream": "cpp"
+    },
+    "C_Cpp.dimInactiveRegions": false
 }
