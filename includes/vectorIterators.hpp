@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/03 16:29:53 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/07 16:34:26 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ namespace ft
 	class vectorIterator
 	{
 		public:
-			typedef T						value_type;
-			typedef value_type&				reference;
-			typedef const value_type&		const_reference;
-			typedef node<T>*				pointer;
-			typedef node<T> const *			const_pointer;
+			typedef T					value_type;
+			typedef value_type&			reference;
+			typedef const value_type&	const_reference;
+			typedef T*					pointer;
+			typedef T const *			const_pointer;
 
 		private:
 			pointer							_ptr;
@@ -36,11 +36,6 @@ namespace ft
 			vectorIterator( pointer ptr ) : _ptr( ptr ) { };
 			~vectorIterator( void ) {};
 			
-			pointer node(void) const
-			{
-				return (_ptr);
-			};
-			
 			vectorIterator &operator=( const vectorIterator &rhs )
 			{
 				this->_ptr = rhs._ptr;
@@ -49,10 +44,10 @@ namespace ft
 
 			vectorIterator &operator++( void )	//++it
 			{
-				this->_ptr = this->_ptr->next;
+				this->_ptr++;
 				return ( *this );
 			};
-			vectorIterator operator++( int )		//it++
+			vectorIterator operator++( int )	//it++
 			{
 				vectorIterator tmp(*this);
 				operator++();
@@ -60,7 +55,7 @@ namespace ft
 			};
 			vectorIterator &operator--( void )
 			{
-				this->_ptr = this->_ptr->prev;
+				this->_ptr--;
 				return ( *this );
 			};
 			vectorIterator operator--( int )
@@ -69,12 +64,26 @@ namespace ft
 				operator--();
 				return (tmp);
 			};
+			vectorIterator operator+(int n) const
+			{
+				vectorIterator tmp(*this);
+				while (n--)
+					tmp++;
+				return (tmp);
+			};
+			vectorIterator operator-(int n) const
+			{
+				vectorIterator tmp(*this);
+				while (n--)
+					tmp--;
+				return (tmp);
+			};
 
 			bool operator!=( const vectorIterator &rhs ) const { return ( this->_ptr != rhs._ptr ); };
 			bool operator ==(vectorIterator const& rhs) const { return ( this->_ptr == rhs._ptr); }
 
-			reference operator*( void )					{ return (  this->_ptr->data ); };
-			const_reference operator *( void ) const	{ return ( this->_ptr->data ); };
+			reference operator*( void )					{ return ( *this->_ptr ); };
+			const_reference operator *( void ) const	{ return ( *this->_ptr ); };
 			pointer operator->() { return (this->_ptr); };
 			pointer operator->() const { return (this->_ptr); };
 	};
@@ -86,8 +95,8 @@ namespace ft
 			typedef T						value_type;
 			typedef value_type&				reference;
 			typedef const value_type&		const_reference;
-			typedef node<T>*				pointer;
-			typedef node<T> const *			const_pointer;
+			typedef 	T*				pointer;
+			typedef 	T const *			const_pointer;
 
 		private:
 			pointer							_ptr;
@@ -95,7 +104,7 @@ namespace ft
 		public:
 			constVectorIterator( void ) : _ptr(NULL) {};
 			constVectorIterator( const constVectorIterator &rhs ) { *this = rhs; };
-			constVectorIterator( pointer ptr ) : _ptr( ptr ) { };
+			constVectorIterator( pointer ptr ) : _ptr( ptr ) {};
 			~constVectorIterator( void ) {};
 
 			constVectorIterator &operator=( const constVectorIterator &rhs )
@@ -106,7 +115,7 @@ namespace ft
 
 			constVectorIterator &operator++( void )	//++it
 			{
-				this->_ptr = this->_ptr->next;
+				this->_ptr++;
 				return ( *this );
 			};
 			constVectorIterator operator++( int )		//it++
@@ -117,7 +126,7 @@ namespace ft
 			};
 			constVectorIterator &operator--( void )
 			{
-				this->_ptr = this->_ptr->prev;
+				this->_ptr--;
 				return ( *this );
 			};
 			constVectorIterator operator--( int )
@@ -130,8 +139,8 @@ namespace ft
 			bool operator!=( const constVectorIterator &rhs ) const { return ( this->_ptr != rhs._ptr ); };
 			bool operator ==(constVectorIterator const& rhs) const { return ( this->_ptr == rhs._ptr); }
 
-			reference operator*( void )					{ return (  this->_ptr->data ); };
-			const_reference operator *( void ) const	{ return ( this->_ptr->data ); };
+			reference operator*( void )					{ return ( *this->_ptr ); };
+			const_reference operator *( void ) const	{ return ( *this->_ptr ); };
 			pointer operator->() { return (this->_ptr); };
 			pointer operator->() const { return (this->_ptr); };
 	};
@@ -143,8 +152,8 @@ namespace ft
 			typedef T						value_type;
 			typedef value_type&				reference;
 			typedef const value_type&		const_reference;
-			typedef node<T>*				pointer;
-			typedef node<T> const *			const_pointer;
+			typedef 	T*				pointer;
+			typedef 	T const *			const_pointer;
 
 		private:
 			pointer							_ptr;
@@ -200,8 +209,8 @@ namespace ft
 			typedef T						value_type;
 			typedef value_type&				reference;
 			typedef const value_type&		const_reference;
-			typedef node<T>*				pointer;
-			typedef node<T> const *			const_pointer;
+			typedef T*						pointer;
+			typedef T const *				const_pointer;
 
 		private:
 			pointer							_ptr;
