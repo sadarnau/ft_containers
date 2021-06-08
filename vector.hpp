@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/08 15:15:26 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/08 16:43:26 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,6 @@ namespace ft
 		typedef const value_type*				const_pointer;
 		typedef std::size_t						size_type;
 		typedef std::ptrdiff_t					difference_type;
-		
-		// typedef ft::random_access_iterator<value_type>               iterator;
-		// typedef ft::random_access_iterator<const value_type>            const_iterator;
-		// typedef ft::reverse_iterator<iterator>             reverse_iterator;
-		// typedef ft::reverse_iterator<const_iterator>       const_reverse_iterator;
-		// typedef typename ft::iterator_traits<iterator>::difference_type    difference_type; 
-
 		typedef ft::vectorIterator<T>			iterator;
 		typedef ft::constVectorIterator<T>		const_iterator;
 		typedef ft::revVectorIterator<T>		reverse_iterator;
@@ -69,9 +62,7 @@ namespace ft
 		: _container(0), _size(0), _capacity(0), _alloc(alloc)
 		{
 			this->_container = this->_alloc.allocate(0);
-			this->reserve(n);
-			while (n--)
-				this->push_back(val);
+			insert(this->begin(), static_cast<size_type>(n), static_cast<value_type>(val));
 
 			return ;
 		}
@@ -283,13 +274,18 @@ namespace ft
 		{
 			InputIterator	tmp2 = first;
 			difference_type	n = 0;
+			size_t			i = this->_capacity;
 
 			while (tmp2++ != last)
-			{
 				n++;
-			}
 
-			size_t	i = this->_size + n;
+	    	if (this->_size + n > this->_capacity)
+			{
+				if (this->_size * 2 >= this->_size + n)
+					i = this->_capacity * 2;
+				else
+					i = this->_size + n;
+			}
 
 			vector tmp(position, this->end());
 
