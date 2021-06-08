@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/07 18:52:05 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/08 15:15:26 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,25 @@ namespace ft
 	class vector
 	{
 	public:
-		typedef T							value_type;
-		typedef Alloc						allocator_type;
-		typedef value_type&					reference;
-		typedef const value_type&			const_reference;
-		typedef value_type*					pointer;
-		typedef const value_type*			const_pointer;
-		typedef size_t						size_type;
-		typedef vectorIterator<T>			iterator;
-		typedef constVectorIterator<T>		const_iterator;
-		typedef revVectorIterator<T>		reverse_iterator;
-		typedef constRevVectorIterator<T>	const_reverse_iterator;
-		typedef ptrdiff_t					difference_type;
+		typedef T								value_type;
+		typedef Alloc							allocator_type;
+		typedef value_type&						reference;
+		typedef const value_type&				const_reference;
+		typedef value_type*						pointer;
+		typedef const value_type*				const_pointer;
+		typedef std::size_t						size_type;
+		typedef std::ptrdiff_t					difference_type;
+		
+		// typedef ft::random_access_iterator<value_type>               iterator;
+		// typedef ft::random_access_iterator<const value_type>            const_iterator;
+		// typedef ft::reverse_iterator<iterator>             reverse_iterator;
+		// typedef ft::reverse_iterator<const_iterator>       const_reverse_iterator;
+		// typedef typename ft::iterator_traits<iterator>::difference_type    difference_type; 
+
+		typedef ft::vectorIterator<T>			iterator;
+		typedef ft::constVectorIterator<T>		const_iterator;
+		typedef ft::revVectorIterator<T>		reverse_iterator;
+		typedef ft::constRevVectorIterator<T>	const_reverse_iterator;
 
 	private:
 		pointer			_container;
@@ -193,14 +200,14 @@ namespace ft
 		template <class InputIterator>
 		void assign (InputIterator first, InputIterator last)
 		{
-			iterator	tmp = first;
+			InputIterator	tmp = first;
 			size_t		n = 0;
 
 			while(tmp++ != last)
 				n++;
 			this->clear();
 			this->reserve(n);
-			for (iterator it = first; it != last; it++)
+			for (InputIterator it = first; it != last; it++)
 				this->push_back(*it);
 
 			return ;
@@ -241,16 +248,27 @@ namespace ft
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			insert(position, (size_t)1, val);
+			vector tmp(position, this->end());
+		
+			this->erase(position, this->end());
+			
+			this->push_back(val);
+			for (iterator it = tmp.begin(); it != tmp.end(); it++)
+				this->push_back(*it);
 
 			return (position);
 		}
 
 		void insert (iterator position, size_type n, const value_type& val)
 		{
-			vector tmp(position, this->end());
+			size_t	i = this->_size + n;
 
+			vector tmp(position, this->end());
+		
 			this->erase(position, this->end());
+			
+			this->reserve(i);
+			
 			while (n--)
 				this->push_back(val);
 
@@ -263,9 +281,21 @@ namespace ft
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last)
 		{
+			InputIterator	tmp2 = first;
+			difference_type	n = 0;
+
+			while (tmp2++ != last)
+			{
+				n++;
+			}
+
+			size_t	i = this->_size + n;
+
 			vector tmp(position, this->end());
 
 			this->erase(position, this->end());
+			this->reserve(i);
+
 			while (first != last)
 				this->push_back(*first++);
 
