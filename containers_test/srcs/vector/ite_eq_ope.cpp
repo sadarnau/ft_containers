@@ -38,15 +38,15 @@ int		main(void)
 
 	std::cout << "\t\tft_eq_ope:" << std::endl;
 	// regular it
-	// ft_eq_ope(it_0 + 3, it_mid);
-	// ft_eq_ope(it_0, it_1);
-	// ft_eq_ope(it_1 - 3, it_mid);
+	ft_eq_ope(it_0 + 3, it_mid);
+	ft_eq_ope(it_0, it_1);
+	ft_eq_ope(it_1 - 3, it_mid);
 	// const it
-	// ft_eq_ope(cit_0 + 3, cit_mid);
-	// ft_eq_ope(cit_0, cit_1);
-	// ft_eq_ope(cit_1 - 3, cit_mid);
+	ft_eq_ope(cit_0 + 3, cit_mid);
+	ft_eq_ope(cit_0, cit_1);
+	ft_eq_ope(cit_1 - 3, cit_mid);
 	// both it
-	// ft_eq_ope(it_0 + 3, cit_mid);
+	ft_eq_ope(it_0 + 3, cit_mid);
 	ft_eq_ope(it_mid, cit_0 + 3);
 	ft_eq_ope(it_0, cit_1);
 	ft_eq_ope(it_1, cit_0);

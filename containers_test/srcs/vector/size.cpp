@@ -10,7 +10,7 @@ void	is_empty(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct)
 int		main(void)
 {
 	const int start_size = 7;
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(start_size, 20);
+	TESTED_NAMESPACE::vector<TESTED_TYPE> vct((size_t)start_size, 20);
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
 
