@@ -1,0 +1,64 @@
+9a10,15
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> ~foo::foo()
+> ~foo::foo()
+> ~foo::foo()
+14d19
+< - 1.4
+17a23
+> - 1.4
+25a32,38
+> foo::operator=(foo) CALLED
+> ~foo::foo()
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+30,31c43,45
+< - 1.4
+< - 2.2
+---
+> - 7.1
+> - 3.7
+> - 3.1
+32a47
+> - 2.2
+34,36c49
+< - 3.1
+< - 3.7
+< - 7.1
+---
+> - 1.4
+43a57,61
+> foo::operator=(foo) CALLED
+> foo::operator=(foo) CALLED
+> ~foo::foo()
+> ~foo::foo()
+> foo::operator=(foo) CALLED
+48,51c66,67
+< - 1.4
+< - 2.2
+< - 2.9
+< - 2.1
+---
+> - 7.1
+> - 5.2
+54d69
+< - 5.2
+56c71,74
+< - 7.1
+---
+> - 2.1
+> - 2.9
+> - 2.2
+> - 1.4
+66,71d83
+< ~foo::foo()
+< ~foo::foo()
+< ~foo::foo()
+< ~foo::foo()
+< ~foo::foo()
+< ~foo::foo()

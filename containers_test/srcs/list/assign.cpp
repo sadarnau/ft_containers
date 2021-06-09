@@ -24,8 +24,8 @@ int		main(void)
 
 	lst_three.assign(lst.begin(), lst.end());
 	lst.assign(lst_two.begin(), lst_two.end());
-	lst_two.assign(2, 42);
-	lst_four.assign(4, 21);
+	lst_two.assign((size_t)2, 42);
+	lst_four.assign((size_t)4, 21);
 
 	std::cout << "\t### After assign(): ###" << std::endl;
 
@@ -34,12 +34,12 @@ int		main(void)
 	printSize(lst_three);
 	printSize(lst_four);
 
-	lst_four.assign(6, 84);
+	lst_four.assign((size_t)6, 84);
 	printSize(lst_four);
 
 	std::cout << "\t### assign() : ###" << std::endl;
 
-	lst.assign(5, 53);
+	lst.assign((size_t)5, 53);
 
 	it = lst_three.begin(); ++it; ++it; ++it;
 	lst_two.assign(lst_three.begin(), it);

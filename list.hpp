@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/03 16:00:48 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/09 18:03:42 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <iostream>
 # include <limits>
 # include "listIterators.hpp"
+# include "revListIterators.hpp"
 
 namespace ft
 {
@@ -24,16 +25,17 @@ namespace ft
 	class list
 	{
 	public:
-		typedef T						value_type;
-		typedef value_type&				reference;
-		typedef const value_type&		const_reference;
-		typedef value_type*				pointer;
-		typedef const value_type*		const_pointer;
-		typedef size_t					size_type;
-		typedef listIterator<T>			iterator;
-		typedef constListIterator<T>	const_iterator;
-		typedef revListIterator<T>		reverse_iterator;
-		typedef constRevListIterator<T>	const_reverse_iterator;
+		typedef T							value_type;
+		typedef value_type&					reference;
+		typedef const value_type&			const_reference;
+		typedef value_type*					pointer;
+		typedef const value_type*			const_pointer;
+		typedef size_t						size_type;
+		typedef std::ptrdiff_t				difference_type;
+		typedef ft::listIterator<T>			iterator;
+		typedef ft::constListIterator<T>	const_iterator;
+		typedef ft::revListIterator<T>		reverse_iterator;
+		typedef ft::constRevListIterator<T>	const_reverse_iterator;
 
 
 	private:
@@ -442,8 +444,12 @@ namespace ft
 		{
 			if (&x == this)
 				return;
-			insert(this->end(), x.begin(), x.end());
-			x.clear();
+
+
+
+			// insert(this->end(), x.begin(), x.end());
+			// x.clear();
+			// sort(less);
 	
 			return ;	
 		}
@@ -498,6 +504,17 @@ namespace ft
 		}
 
 		static bool	less(T& lvalue, T& rvalue) { return (lvalue > rvalue); };
+
+		// void	exchange(list &src) 
+		// {
+		// 	this->clear();
+		// 	node<value_type> tmp = this->_head;
+
+		// 	this->_head = src._head;
+		// 	this->_length = src._length;
+		// 	src._head = tmp; src._length = 0;
+		// 	tmp = NULL;
+		// }
 	};
 
 	template<typename T>

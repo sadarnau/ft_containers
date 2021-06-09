@@ -6,10 +6,10 @@ void	checkErase(TESTED_NAMESPACE::list<TESTED_TYPE> const &lst,
 					TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator const &it)
 {
 	static int i = 0;
-
+	
 	int j = 0;
 	TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator ite = lst.begin();
-	while (it != ite--)
+	while (it != ite++)
 		++j;
 
 	std::cout << "[" << i++ << "] " << "erase: " << j << std::endl;

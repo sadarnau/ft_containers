@@ -14,13 +14,13 @@ int		main(void)
 	printSize(lst);
 
 	lst2.insert(lst2.end(), 42);
-	lst2.insert(lst2.begin(), 2, 21);
+	lst2.insert(lst2.begin(), (size_t)2, 21);
 	printSize(lst2);
 
 	lst2.insert(--(--lst2.end()), 42);
 	printSize(lst2);
 
-	lst2.insert(lst2.end(), 2, 84);
+	lst2.insert(lst2.end(), (size_t)2, 84);
 	printSize(lst2);
 
 	lst2.resize(4);
