@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/09 17:26:41 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:41:38 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,10 @@ namespace ft
 			pointer							_ptr;
 
 		public:
-			listIterator( void ) : _ptr(NULL) {}
-			listIterator( const listIterator &rhs ) { *this = rhs; }
-			listIterator( pointer ptr ) : _ptr( ptr ) { }
-			~listIterator( void ) {}
+			listIterator( void ) : _ptr(NULL)		{}
+			listIterator( const listIterator &rhs )	{ *this = rhs; }
+			listIterator( pointer ptr ) : _ptr(ptr)	{}
+			~listIterator( void ) 					{}
 			
 			pointer node(void) const
 			{
@@ -111,25 +111,22 @@ namespace ft
 				return (*this);
 			}
 
-			difference_type operator -(listIterator b) { return (this->_ptr - b._ptr); }	// a - b
-			difference_type operator +(listIterator b) { return (this->_ptr + b._ptr); }	// a + b
+			difference_type operator -(listIterator b) { return ( this->_ptr - b._ptr ); }	// a - b
+			difference_type operator +(listIterator b) { return ( this->_ptr + b._ptr ); }	// a + b
 		
-			bool operator !=(listIterator const &rhs )	const	{ return ( this->_ptr != rhs._ptr ); }
+			bool operator !=(listIterator const &rhs)	const	{ return ( this->_ptr != rhs._ptr ); }
 			bool operator ==(listIterator const &rhs)	const	{ return ( this->_ptr == rhs._ptr); }
-			bool operator <(listIterator const &rhs)	const	{ return ( this->_ptr < rhs._ptr); }
+			bool operator < (listIterator const &rhs)	const	{ return ( this->_ptr < rhs._ptr); }
 			bool operator <=(listIterator const &rhs)	const	{ return ( this->_ptr <= rhs._ptr); }
-			bool operator >(listIterator const &rhs)	const	{ return ( this->_ptr > rhs._ptr); }
+			bool operator > (listIterator const &rhs)	const	{ return ( this->_ptr > rhs._ptr); }
 			bool operator >=(listIterator const &rhs)	const	{ return ( this->_ptr >= rhs._ptr); }
 
-			friend listIterator operator+(int n, const listIterator& it)	{ return (it + n); }
-			friend listIterator operator-(int n, const listIterator& it)	{ return (it - n); }
+			friend listIterator operator+(int n, const listIterator& it)	{ return ( it + n ); }
+			friend listIterator operator-(int n, const listIterator& it)	{ return ( it - n ); }
 
-			reference operator*( void )					{ return (  this->_ptr->data ); }
-			// const_reference operator *( void ) const	{ return ( this->_ptr->data ); }
-			pointer operator->() { return (this->_ptr); }
-			// pointer operator->() const { return (this->_ptr); }
-			// reference operator[](int n)	{ return (*(*this + n)); }
-			pointer	getPtr() 	const 	{ return( this->_ptr ); }
+			reference operator*( void )	{ return (  this->_ptr->data ); }
+			value_type * operator->()	{ return ( &this->_ptr->data ); }
+			pointer	getPtr() const	 	{ return ( this->_ptr ); }
 	};
 
 	template <typename T>
@@ -147,11 +144,11 @@ namespace ft
 			pointer							_ptr;
 
 		public:
-			constListIterator( void ) : _ptr(NULL) {}
-			constListIterator( const constListIterator &rhs ) { *this = rhs; }
-			constListIterator( const listIterator<T> &rhs ) { *this = rhs; }
-			constListIterator( pointer ptr ) : _ptr( ptr ) { }
-			~constListIterator( void ) {}
+			constListIterator( void ) : _ptr(NULL)				{}
+			constListIterator( const constListIterator &rhs )	{ *this = rhs; }
+			constListIterator( const listIterator<T> &rhs )		{ *this = rhs; }
+			constListIterator( pointer ptr ) : _ptr( ptr )		{}
+			~constListIterator( void )							{}
 
 			constListIterator &operator=( const constListIterator &rhs )
 			{
@@ -218,74 +215,64 @@ namespace ft
 				return (*this);
 			}
 
-			difference_type operator -(constListIterator b)		{ return (_ptr - b._ptr); }			// a - b
-			difference_type operator -(constListIterator b) const { return (_ptr - b._ptr); }
-			difference_type operator +(constListIterator b)		{ return (_ptr + b._ptr); } 			// a + b
-			difference_type operator +(constListIterator b) const { return (_ptr + b._ptr); }
+			difference_type operator -(constListIterator b)			{ return (_ptr - b._ptr); }			// a - b
+			difference_type operator -(constListIterator b)	const	{ return (_ptr - b._ptr); }
+			difference_type operator +(constListIterator b)			{ return (_ptr + b._ptr); } 		// a + b
+			difference_type operator +(constListIterator b)	const	{ return (_ptr + b._ptr); }
 
 			friend constListIterator operator+(int n, const constListIterator& it)	{ return (it + n); }
 			friend constListIterator operator-(int n, const constListIterator& it)	{ return (it - n); }
 
-			bool operator !=( const constListIterator &rhs )	const { return ( this->_ptr != rhs._ptr ); }
-			bool operator!=( const listIterator<T> &rhs )		const { return ( this->_ptr != rhs.getPtr() ); }
-			bool operator ==(constListIterator const& rhs)	const { return ( this->_ptr == rhs._ptr); }
-			bool operator==( const listIterator<T> &rhs )		const { return ( this->_ptr == rhs.getPtr() ); }
-			bool operator <(constListIterator const& rhs)		const { return ( this->_ptr < rhs._ptr); }
-			bool operator<( const listIterator<T> &rhs )		const { return ( this->_ptr < rhs.getPtr() ); }
-			bool operator <=(constListIterator const& rhs)	const { return ( this->_ptr <= rhs._ptr); }
-			bool operator<=(listIterator<T> const& rhs)		const { return ( this->_ptr <= rhs.getPtr()); }
-			bool operator >(constListIterator const& rhs)		const { return ( this->_ptr > rhs._ptr); }
-			bool operator>(listIterator<T> const& rhs)		const { return ( this->_ptr > rhs.getPtr()); }
-			bool operator >=(constListIterator const& rhs)	const { return ( this->_ptr >= rhs._ptr); }
-			bool operator>=(listIterator<T> const& rhs)		const { return ( this->_ptr >= rhs.getPtr()); }
+			bool operator !=( const constListIterator &rhs )	const	{ return ( this->_ptr != rhs._ptr ); }
+			bool operator!=( const listIterator<T> &rhs )		const	{ return ( this->_ptr != rhs.getPtr() ); }
+			bool operator ==(constListIterator const& rhs)		const	{ return ( this->_ptr == rhs._ptr); }
+			bool operator==( const listIterator<T> &rhs )		const	{ return ( this->_ptr == rhs.getPtr() ); }
+			bool operator <(constListIterator const& rhs)		const	{ return ( this->_ptr < rhs._ptr); }
+			bool operator<( const listIterator<T> &rhs )		const	{ return ( this->_ptr < rhs.getPtr() ); }
+			bool operator <=(constListIterator const& rhs)		const	{ return ( this->_ptr <= rhs._ptr); }
+			bool operator<=(listIterator<T> const& rhs)			const	{ return ( this->_ptr <= rhs.getPtr()); }
+			bool operator >(constListIterator const& rhs)		const	{ return ( this->_ptr > rhs._ptr); }
+			bool operator>(listIterator<T> const& rhs)			const	{ return ( this->_ptr > rhs.getPtr()); }
+			bool operator >=(constListIterator const& rhs)		const	{ return ( this->_ptr >= rhs._ptr); }
+			bool operator>=(listIterator<T> const& rhs)			const	{ return ( this->_ptr >= rhs.getPtr()); }
 
-			// reference operator*( void )					{ return (  this->_ptr->data ); }
-			const_reference operator *( void ) const	{ return ( this->_ptr->data ); }
-			const_pointer operator->()	const	{ return (this->_ptr); }
-			// pointer operator->() { return (this->_ptr); }
-			// pointer operator->() const { return (this->_ptr); }
-			pointer	getPtr()			const	{ return( this->_ptr ); }
-
+			const_reference operator *( void )	const	{ return ( this->_ptr->data ); }
+			const value_type * operator->() 			{ return ( &this->_ptr->data ); }
+			pointer	getPtr()					const	{ return ( this->_ptr ); }
 	};
 
 	template<typename T>
-	bool operator==(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator==(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() == rhs.getPtr());
 	}
 
 	template<typename T>
-	bool operator!=(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator!=(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() != rhs.getPtr());
 	}
 
 	template<typename T>
-	bool operator<(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator<(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() < rhs.getPtr());
 	}
 
 	template<typename T>
-	bool operator>(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator>(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() > rhs.getPtr());
 	}
 
 	template<typename T>
-	bool operator<=(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator<=(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() <= rhs.getPtr());
 	}
 
 	template<typename T>
-	bool operator>=(const ft::listIterator<T> lhs,
-			const ft::constListIterator<T> rhs)
+	bool operator>=(const ft::listIterator<T> lhs, const ft::constListIterator<T> rhs)
 	{
 		return (lhs.getPtr() >= rhs.getPtr());
 	}

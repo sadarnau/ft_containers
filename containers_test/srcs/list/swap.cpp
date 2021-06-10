@@ -4,8 +4,8 @@
 
 int main ()
 {
-	TESTED_NAMESPACE::list<TESTED_TYPE> foo(3, 15);
-	TESTED_NAMESPACE::list<TESTED_TYPE> bar(5, 42);
+	TESTED_NAMESPACE::list<TESTED_TYPE> foo((size_t)3, 15);
+	TESTED_NAMESPACE::list<TESTED_TYPE> bar((size_t)5, 42);
 	
 	TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator it_foo = foo.begin();
 	TESTED_NAMESPACE::list<TESTED_TYPE>::const_iterator it_bar = bar.begin();

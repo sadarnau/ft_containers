@@ -53,6 +53,7 @@ int		main(void)
 	ft_merge(first, second);
 
 	ft_push_back(second, 2.1);
+	std::cout << "here\n" << std::endl;
 
 	ft_merge(first, second, t_cmp());
 

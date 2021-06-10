@@ -9,7 +9,7 @@ void	is_empty(TESTED_NAMESPACE::list<TESTED_TYPE> const &lst)
 
 int		main(void)
 {
-	TESTED_NAMESPACE::list<TESTED_TYPE> lst(7, 20);
+	TESTED_NAMESPACE::list<TESTED_TYPE> lst((size_t)7, 20);
 	TESTED_NAMESPACE::list<TESTED_TYPE> lst2;
 	TESTED_NAMESPACE::list<TESTED_TYPE>::iterator it = lst.begin();
 

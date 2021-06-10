@@ -4,7 +4,7 @@
 
 int		main(void)
 {
-	TESTED_NAMESPACE::list<TESTED_TYPE> lst(5), lst2(1, 42), lst3;
+	TESTED_NAMESPACE::list<TESTED_TYPE> lst(5), lst2((size_t)1, 42), lst3;
 	TESTED_NAMESPACE::list<TESTED_TYPE>::iterator it = lst.begin();
 
 	for (unsigned long int i = 0; i < lst.size();)

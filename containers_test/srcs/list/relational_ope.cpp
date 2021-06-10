@@ -2,8 +2,8 @@
 
 #define TESTED_TYPE int
 
-template <class T, class Alloc>
-void	cmp(const TESTED_NAMESPACE::list<T, Alloc> &lhs, const TESTED_NAMESPACE::list<T, Alloc> &rhs)
+template <class T>
+void	cmp(const TESTED_NAMESPACE::list<T> &lhs, const TESTED_NAMESPACE::list<T> &rhs)
 {
 	static int i = 0;
 
@@ -27,7 +27,8 @@ int		main(void)
 	cmp(lst2, lst); // 3
 
 	*++(++lst.begin()) = 42;
-
+	printSize(lst);
+	printSize(lst2);
 	cmp(lst, lst2); // 4
 	cmp(lst2, lst); // 5
 

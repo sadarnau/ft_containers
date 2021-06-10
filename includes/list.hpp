@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/09 18:03:42 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/10 15:33:45 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ namespace ft
 		typedef ft::constListIterator<T>	const_iterator;
 		typedef ft::revListIterator<T>		reverse_iterator;
 		typedef ft::constRevListIterator<T>	const_reverse_iterator;
-
+		typedef ft::node<T>					node_type;
+		typedef node_type*									node_ptr;
 
 	private:
 		node<T>			*_head;
@@ -56,9 +57,7 @@ namespace ft
 		
 			this->_head->prev = NULL;
 			this->_head->next = this->_tail;
-			// this->_head->data = 0;
 
-			// this->_tail->data = 0;
 			this->_tail->next = NULL;
 			this->_tail->prev = this->_head;
 
@@ -79,7 +78,6 @@ namespace ft
 		explicit	list ( size_type n, const value_type& val = value_type() )
 		{
 			this->initList();
-			//assign ??
 			for (size_type i = 0; i != n; i++)
 				push_back(val);
 		
@@ -129,32 +127,32 @@ namespace ft
 		ITERATORS
 	*/
 
-		iterator		begin(void)			{ return( iterator( this->_head->next )); }
-		const_iterator	begin(void) const	{ return( const_iterator( this->_head->next )); }
-		iterator		end(void) 			{ return( iterator( this->_tail )); }
-		const_iterator	end(void) const		{ return( const_iterator( this->_tail )); }
-		reverse_iterator rbegin()				{ return( reverse_iterator( this->_tail->prev )); }
-		const_reverse_iterator rbegin() const	{ return( const_reverse_iterator( this->_tail->prev )); }
-		reverse_iterator rend()					{ return ( reverse_iterator( this->_head )); }
-		const_reverse_iterator rend() const		{ return( const_reverse_iterator( this->head )); }
+		iterator				begin(void)			{ return( iterator( this->_head->next )); }
+		const_iterator			begin(void)	const	{ return( const_iterator( this->_head->next )); }
+		iterator				end(void) 			{ return( iterator( this->_tail )); }
+		const_iterator			end(void) 	const	{ return( const_iterator( this->_tail )); }
+		reverse_iterator		rbegin()			{ return( reverse_iterator( this->_tail->prev )); }
+		const_reverse_iterator	rbegin()	const	{ return( const_reverse_iterator( this->_tail->prev )); }
+		reverse_iterator 		rend()				{ return( reverse_iterator( this->_head )); }
+		const_reverse_iterator	rend()		const	{ return( const_reverse_iterator( this->head )); }
 
 	/*
 		CAPACITY
 	*/
 
-		bool		empty( void )		{ return( this->_length == 0 ); }
-		size_type	size( void )		{ return( this->_length ); }
-		size_type	size( void ) const	{ return( this->_length ); }
-		size_type	max_size() const	{ return( std::numeric_limits<size_type>::max() / (sizeof(node<T>)) ); }
+		bool		empty( void )	const	{ return( this->_length == 0 ); }
+		size_type	size( void )			{ return( this->_length ); }
+		size_type	size( void )	const	{ return( this->_length ); }
+		size_type	max_size()		const	{ return( std::numeric_limits<size_type>::max() / (sizeof(node<T>)) ); }
 
 	/*
 		ELEMENT ACCESS
 	*/
 
 		reference		front( void )	{ return( this->_head->next->data ); }
-		const_reference front() const	{ return( this->_head->next->data ); }
+		const_reference front()	const	{ return( this->_head->next->data ); }
 		reference		back( void )	{ return( this->_tail->prev->data ); }
-		const_reference back() const	{ return( this->_tail->prev->data ); }
+		const_reference back()	const	{ return( this->_tail->prev->data ); }
 
 
 	/*
@@ -260,10 +258,10 @@ namespace ft
 		{
 			node<value_type>	*tmp = new node<value_type>;
 
-			position->prev->next = tmp;
+			position.node()->prev->next = tmp;
 			tmp->next = position.node();
-			tmp->prev = position->prev;
-			position->prev = tmp;
+			tmp->prev = position.node()->prev;
+			position.node()->prev = tmp;
 
 			tmp->data = val;
 			this->_length++;
@@ -284,7 +282,7 @@ namespace ft
 		{
 			while (first != last)
 			{
-				insert(position, first->data);
+				insert(position, first.node()->data);
 				first++;
 			}
 
@@ -295,9 +293,9 @@ namespace ft
 		{
 			node<value_type>	*tmp;
 
-			tmp = position->next;
-			tmp->prev = position->prev;
-			position->prev->next = tmp;
+			tmp = position.node()->next;
+			tmp->prev = position.node()->prev;
+			position.node()->prev->next = tmp;
 
 			this->_length--;
 
@@ -373,16 +371,31 @@ namespace ft
 
 		void splice (iterator position, list& x, iterator i)
 		{
-			insert(position, *i);
-			x.erase(i);
+			this->splice(position, x, i, i + 1);
 
 			return ;
 		}
 
 		void splice (iterator position, list& x, iterator first, iterator last)
 		{
-			insert(position, first, last);
-			x.erase(first, last);
+			node<T>		*previous = position.node()->prev, *positionNode = position.node();
+			node<T>		*beginning = first.node(), *end = last.node()->prev;
+			size_type	size = 0;
+
+			while (first++ != last)
+				size++;
+	
+			beginning->prev->next = end->next;
+			end->next->prev = beginning->prev;
+
+			previous->next = beginning;
+			beginning->prev = previous;
+
+			positionNode->prev = end;
+			end->next = positionNode;
+
+			this->_length += size;
+			x._length -= size;
 
 			return;
 		}
@@ -444,12 +457,7 @@ namespace ft
 		{
 			if (&x == this)
 				return;
-
-
-
-			// insert(this->end(), x.begin(), x.end());
-			// x.clear();
-			// sort(less);
+			this->merge(x, less);
 	
 			return ;	
 		}
@@ -459,34 +467,45 @@ namespace ft
 		{
 			if (&x == this)
 				return;
-			insert(this->end(), x.begin(), x.end());
-			x.clear();
-			sort(comp);
+
+			iterator it = this->begin(), itx = x.begin();
+
+			while (itx != x.end() && it != this->end())
+			{
+				if (comp(*itx, *it))
+					this->splice(it, x, itx++);
+				else
+					it++;
+			}
+
+			if (x._length != 0)
+				this->splice(this->end(), x);
+		
+			return ;
 		}
+
 
 		void sort() { sort(less); }
 
 		template <class Compare>
 		void sort (Compare comp)
 		{
-			iterator it1 = this->begin(), it2;
+			iterator 	it = this->begin(), it2;
+			size_type	size = this->_length;
 
-			while (it1 != this->end())
+			while (size--)
 			{
-				it2 = it1->next;
+				it = this->begin();
+				it2 = it + 1;
 				while (it2 != this->end())
 				{
-					if (comp(*it1, *it2))
-					{
-						value_type tmp = *it1;
-						*it1 = *it2;
-						*it2 = tmp;
-					}
-					it2++;
+					if (!comp(*it, *it2))
+						this->splice(it, *this, it2);
+					else
+						it++;
+					it2 = it + 1;
 				}
-				it1++;
 			}
-
 			return;
 		}
 
@@ -503,18 +522,23 @@ namespace ft
 			return ;
 		}
 
-		static bool	less(T& lvalue, T& rvalue) { return (lvalue > rvalue); };
+		static bool	less(T& lvalue, T& rvalue) { return (lvalue < rvalue); };
 
-		// void	exchange(list &src) 
-		// {
-		// 	this->clear();
-		// 	node<value_type> tmp = this->_head;
+		void	exchange(iterator it1, iterator it2) 
+		{
+			node<T> *before = it1.node()->prev, *after = it1.node()->next;
+			node<T> *before2 = it2.node()->prev, *after2 = it2.node()->next;
 
-		// 	this->_head = src._head;
-		// 	this->_length = src._length;
-		// 	src._head = tmp; src._length = 0;
-		// 	tmp = NULL;
-		// }
+			before->next = it2.node();
+			after->prev = it2.node();
+			it2.node()->prev = before;
+			it2.node()->next = after;
+
+			before->next = it1.node();
+			after->prev = it1.node();
+			it1.node()->prev = before;
+			it1.node()->next = after;
+		}
 	};
 
 	template<typename T>
@@ -537,21 +561,19 @@ namespace ft
 	template <class T>
 	bool operator<(const list<T>& lhs, const list<T>& rhs)
 	{
-		if (lhs.size() < rhs.size())
-			return (true);
-		if (lhs.size() > rhs.size())
-			return (false);
-
 		constListIterator<T> it1 = lhs.begin();
 		constListIterator<T> it2 = rhs.begin();
 		
-		while (it1 != lhs.end())
+		while (it1 != lhs.end() && it2 != rhs.end())
 		{
 			if (*it1 != *it2)
 				return (*it1 < *it2);
 			it1++;
 			it2++;
 		}	
+
+		if (it2 != rhs.end())
+			return(true);
 
 		return (false);	
 	}
