@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 15:33:45 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/10 16:53:08 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,27 @@ namespace ft
 	template < typename T >
 	class list
 	{
-	public:
-		typedef T							value_type;
-		typedef value_type&					reference;
-		typedef const value_type&			const_reference;
-		typedef value_type*					pointer;
-		typedef const value_type*			const_pointer;
-		typedef size_t						size_type;
-		typedef std::ptrdiff_t				difference_type;
-		typedef ft::listIterator<T>			iterator;
-		typedef ft::constListIterator<T>	const_iterator;
-		typedef ft::revListIterator<T>		reverse_iterator;
-		typedef ft::constRevListIterator<T>	const_reverse_iterator;
-		typedef ft::node<T>					node_type;
-		typedef node_type*									node_ptr;
+		public:
+			typedef T							value_type;
+			typedef value_type&					reference;
+			typedef const value_type&			const_reference;
+			typedef value_type*					pointer;
+			typedef const value_type*			const_pointer;
+			typedef size_t						size_type;
+			typedef std::ptrdiff_t				difference_type;
+			typedef ft::listIterator<T>			iterator;
+			typedef ft::constListIterator<T>	const_iterator;
+			typedef ft::revListIterator<T>		reverse_iterator;
+			typedef ft::constRevListIterator<T>	const_reverse_iterator;
+			typedef ft::node<T>					node_type;
+			typedef node_type*									node_ptr;
 
-	private:
-		node<T>			*_head;
-		node<T>			*_tail;
-		size_type		_length;
+		private:
+			node<T>			*_head;
+			node<T>			*_tail;
+			size_type		_length;
 
-	public:
+		public:
 
 	/*
 		MEMBER FUNCTIONS
