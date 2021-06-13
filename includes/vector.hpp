@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/09 15:27:44 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/10 17:57:06 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,27 @@ namespace ft
 	template < class T, class Alloc = std::allocator<T> >
 	class vector
 	{
-	public:
-		typedef T								value_type;
-		typedef Alloc							allocator_type;
-		typedef value_type&						reference;
-		typedef const value_type&				const_reference;
-		typedef value_type*						pointer;
-		typedef const value_type*				const_pointer;
-		typedef std::size_t						size_type;
-		typedef std::ptrdiff_t					difference_type;
-		typedef ft::vectorIterator<T>			iterator;
-		typedef ft::constVectorIterator<T>		const_iterator;
-		typedef ft::revVectorIterator<T>		reverse_iterator;
-		typedef ft::constRevVectorIterator<T>	const_reverse_iterator;
+		public:
+			typedef T								value_type;
+			typedef Alloc							allocator_type;
+			typedef value_type&						reference;
+			typedef const value_type&				const_reference;
+			typedef value_type*						pointer;
+			typedef const value_type*				const_pointer;
+			typedef std::size_t						size_type;
+			typedef std::ptrdiff_t					difference_type;
+			typedef ft::vectorIterator<T>			iterator;
+			typedef ft::constVectorIterator<T>		const_iterator;
+			typedef ft::revVectorIterator<T>		reverse_iterator;
+			typedef ft::constRevVectorIterator<T>	const_reverse_iterator;
 
-	private:
-		pointer			_container;
-		size_type		_size;
-		size_type		_capacity;
-		allocator_type	_alloc;
+		private:
+			pointer			_container;
+			size_type		_size;
+			size_type		_capacity;
+			allocator_type	_alloc;
 
-	public:
+		public:
 
 	/*
 		MEMBER FUNCTIONS
@@ -354,7 +354,9 @@ namespace ft
 	/*
 		ALLOCATOR
 	*/
-		allocator_type get_allocator() const;
+
+		allocator_type get_allocator() const	{ return ( this->_alloc ); }
+
 	};
 
 	template <class T, class Alloc>
