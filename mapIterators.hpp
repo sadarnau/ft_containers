@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 11:23:41 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/13 16:30:09 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/14 17:16:35 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,14 @@
 
 namespace ft
 {
+	template <typename T>
+	void	swap(T & a, T & b)
+	{
+		T tmp = a;
+		a = b;
+		b = tmp;
+	}
+
 	template <class Key, class T>
 	struct BTNode
 	{
