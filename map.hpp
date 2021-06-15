@@ -6,12 +6,12 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:40:33 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/14 17:49:40 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/15 18:11:03 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_HPP
-# define VECTOR_HPP
+#ifndef MAP_HPP
+# define MAP_HPP
 
 # include "mapIterators.hpp"
 # include <memory>
@@ -34,8 +34,8 @@ namespace ft
 			typedef const value_type&				const_reference;
 			typedef value_type*						pointer;
 			typedef const value_type*				const_pointer;
-			typedef ft::mapIterator<Key, T>			iterator;
-			// typedef ft::constMapIterator<Key, T>		const_iterator;
+			typedef ft::mapIterator<Key, T>						iterator;
+			typedef ft::constMapIterator<const Key, const T>		const_iterator;
 			// typedef ft::revMapIterator<Key, T>		reverse_iterator;
 			// typedef ft::constRevMapIterator<Key, T>	const_reverse_iterator;
 			typedef std::size_t						size_type;
@@ -59,7 +59,7 @@ namespace ft
 			allocator_type	_alloc;
 			key_compare 	_comp;
 			node			_root;
-			node			_start;
+			// node			_start;
 			node			_end;
 			size_type		_length;
 
@@ -182,6 +182,17 @@ namespace ft
 			delete succ;
 		}
 
+		void	deleteTree(node n)
+		{
+			if (n->right)
+				deleteTree(n->right);
+			if (n->left)
+				deleteTree(n->left);
+			delete n;
+
+			return ;
+		}
+
 	/*
 		MEMBER FUNCTIONS
 	*/
@@ -223,7 +234,7 @@ namespace ft
 
 	//(destructor) :
 
-		~map() {return;}
+		~map() { deleteTree(this->_root); }
 
 	//operator= :
 
@@ -249,9 +260,17 @@ namespace ft
 			
 			return ( iterator(tmp) );
 		}
-		// const_iterator			begin(void) const	{ return ( const_iterator() ); }
+		const_iterator			begin(void) const
+		{
+			node tmp = this->_root;
+			
+			while(tmp->left)
+				tmp = tmp->left;
+			
+			return ( const_iterator(tmp) );
+		}
 		iterator				end(void) 			{ return ( iterator(this->_end) ); }
-		// const_iterator			end(void) 	const	{ return ( const_iterator() ); }
+		const_iterator			end(void) 	const	{ return ( const_iterator(this->_end) ); }
 		// reverse_iterator 		rbegin()			{ return ( reverse_iterator() ); }
 		// const_reverse_iterator	rbegin() 	const	{ return ( const_reverse_iterator() ); }
 		// reverse_iterator 		rend()				{ return ( reverse_iterator() ); }
@@ -269,7 +288,16 @@ namespace ft
 		ELEMENT ACCESS
 	*/
 
-		mapped_type& operator[] (const key_type& k);
+		mapped_type& operator[] (const key_type& k)
+		{
+
+			iterator	tmp = find(k);
+
+			if (tmp != this->_end)
+				return ( tmp->second );
+
+			return ( this->insert(std::make_pair(k, mapped_type())).first->second );
+		}
 
 	/*
 		MODIFIERS
@@ -396,15 +424,19 @@ namespace ft
 
 		void erase (iterator position)
 		{
-			deleteNode(position.node());
+			deleteNode(position.getPtr());
+			--this->_length;
+
 			return ;
 		}
 
 		size_type erase (const key_type& k)
 		{
-			if (find(k) != this->_end)
+			iterator	tmp = find(k);
+
+			if (tmp != this->_end)
 			{
-				this->erase(find(k));
+				this->erase(tmp);
 				return (1);
 			}
 
@@ -417,9 +449,18 @@ namespace ft
 				this->erase(first);
 				first++;
 			}
+
+			return ;
 		}
 
-		void swap (map& x);
+		void swap (map& x)
+		{
+			ft::swap(this->_root, x._root);
+			ft::swap(this->_end, x._end);
+			ft::swap(this->_lenght, x._lenght);
+
+			return ;
+		}
 
 		void clear() { this->erase(begin(), end()); }
 
@@ -447,16 +488,44 @@ namespace ft
 				else
 					tmp = tmp->right;
 			}
-			return (this->_end);
+			return ( iterator(this->_end) );
 		}
-		// const_iterator find (const key_type& k) const;
+		const_iterator find (const key_type& k) const { return ( const_iterator(find(k)) ); }
 
-		size_type count (const key_type& k) const;
+		size_type count (const key_type& k) const { return ((find(k) == this->_end)); }
 
-		iterator lower_bound (const key_type& k);
-		// const_iterator lower_bound (const key_type& k) const;
+		iterator lower_bound (const key_type& k)
+		{
+			iterator it = this->begin();
 
-		iterator upper_bound (const key_type& k);
+			while (it != this->_end)
+			{
+				if (this->_comp(it->first, k) <= 0)
+					return (it);
+				++it;
+			}
+
+			return (this->end());
+		}
+
+		const_iterator lower_bound (const key_type& k) const { return ( const_iterator(this->lower_bound(k)) ); }
+
+		iterator upper_bound (const key_type& k)
+		{
+			iterator it = this->begin();
+
+			while (it != this->end())
+			{
+				if (it->first == k )
+					return (++it);
+				if (this->_comp(it->first, k) <= 0)
+					return (it);
+				++it;
+				std::cout << "caca";
+			}
+
+			return (this->end());
+		}
 		// const_iterator upper_bound (const key_type& k) const;
 
 
