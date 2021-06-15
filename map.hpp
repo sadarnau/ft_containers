@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:40:33 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/15 18:11:03 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:33:32 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ namespace ft
 			typedef value_type*						pointer;
 			typedef const value_type*				const_pointer;
 			typedef ft::mapIterator<Key, T>						iterator;
-			typedef ft::constMapIterator<const Key, const T>		const_iterator;
+			typedef ft::constMapIterator<Key, T>		const_iterator;
 			// typedef ft::revMapIterator<Key, T>		reverse_iterator;
 			// typedef ft::constRevMapIterator<Key, T>	const_reverse_iterator;
 			typedef std::size_t						size_type;
@@ -200,7 +200,7 @@ namespace ft
 	//(constructor) :
 
 		explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
-		: _comp(comp), _alloc(alloc), _length(0)
+		: _alloc(alloc), _comp(comp), _length(0)
 		{
 			this->_root = newNode(key_type(), mapped_type(), NULL);
 			this->_end = newNode(key_type(), mapped_type(), this->_root);
@@ -210,7 +210,7 @@ namespace ft
 
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(),
-			const allocator_type& alloc = allocator_type()) : _comp(comp), _alloc(alloc)
+			const allocator_type& alloc = allocator_type()) : _alloc(alloc), _comp(comp)
 		{
 			this->_length = 0;
 			this->_root = newNode(key_type(), mapped_type(), NULL);
@@ -447,7 +447,7 @@ namespace ft
 			while(first != last)
 			{
 				this->erase(first);
-				first++;
+				++first;
 			}
 
 			return ;
@@ -457,12 +457,16 @@ namespace ft
 		{
 			ft::swap(this->_root, x._root);
 			ft::swap(this->_end, x._end);
-			ft::swap(this->_lenght, x._lenght);
+			ft::swap(this->_length, x._length);
 
 			return ;
 		}
 
-		void clear() { this->erase(begin(), end()); }
+		void clear()
+		{
+			this->erase(begin(), end()); 
+			
+		}
 
 	/*
 		OBSERVERS
@@ -490,9 +494,24 @@ namespace ft
 			}
 			return ( iterator(this->_end) );
 		}
-		const_iterator find (const key_type& k) const { return ( const_iterator(find(k)) ); }
 
-		size_type count (const key_type& k) const { return ((find(k) == this->_end)); }
+		const_iterator find (const key_type& k) const
+		{
+			node	tmp = this->_root;
+
+			while(tmp)
+			{
+				if (tmp->pair.first == k)
+					return ( const_iterator(tmp) );
+				if (this->_comp(k, tmp->pair.first))
+					tmp = tmp->left;
+				else
+					tmp = tmp->right;
+			}
+			return ( const_iterator(this->_end) );
+		}
+
+		size_type count (const key_type& k) const { return ((find(k) == this->end())); }
 
 		iterator lower_bound (const key_type& k)
 		{
@@ -508,11 +527,40 @@ namespace ft
 			return (this->end());
 		}
 
-		const_iterator lower_bound (const key_type& k) const { return ( const_iterator(this->lower_bound(k)) ); }
+		const_iterator lower_bound (const key_type& k) const
+		{
+			const_iterator it = this->begin();
+
+			while (it != this->end())
+			{
+				if (this->_comp(it->first, k) <= 0)
+					return (it);
+				++it;
+			}
+
+			return (this->end());
+		}
+
 
 		iterator upper_bound (const key_type& k)
 		{
 			iterator it = this->begin();
+
+			while (it != this->_end)
+			{
+				if (it->first == k )
+					return (++it);
+				if (this->_comp(it->first, k) <= 0)
+					return (it);
+				++it;
+			}
+
+			return (this->end());
+		}
+
+		const_iterator upper_bound (const key_type& k) const
+		{
+			const_iterator it = this->begin();
 
 			while (it != this->end())
 			{
@@ -521,16 +569,13 @@ namespace ft
 				if (this->_comp(it->first, k) <= 0)
 					return (it);
 				++it;
-				std::cout << "caca";
 			}
 
 			return (this->end());
 		}
-		// const_iterator upper_bound (const key_type& k) const;
 
-
-		// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
-		std::pair<iterator,iterator>	equal_range (const key_type& k);
+		std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const { return ( std::pair<const_iterator, const_iterator>(this->lower_bound(k), this->upper_bound(k))); }
+		std::pair<iterator,iterator>	equal_range (const key_type& k) { return ( std::pair<iterator, iterator>(this->lower_bound(k), this->upper_bound(k))); }
 
 	/*
 		ALLOCATOR

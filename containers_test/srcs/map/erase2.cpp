@@ -3,7 +3,7 @@
 
 #define T1 int
 #define T2 std::string
-typedef _pair<const T1, T2> T3;
+typedef std::pair<const T1, T2> T3;
 
 static int iter = 0;
 

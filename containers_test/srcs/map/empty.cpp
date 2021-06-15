@@ -3,7 +3,7 @@
 
 #define T1 char
 #define T2 int
-typedef _pair<const T1, T2> T3;
+typedef std::pair<const T1, T2> T3;
 
 template <class T>
 void	is_empty(T const &mp)

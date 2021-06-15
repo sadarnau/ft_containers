@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 11:23:41 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/15 18:10:23 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/15 19:19:17 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "map.hpp"
 # include <utility>
+# include <iostream>
 
 namespace ft
 {
@@ -68,7 +69,7 @@ namespace ft
 			mapIterator &operator++( void )	//++it
 			{
 				pointer next;
-				
+
 				if (!this->_ptr->right)
 				{
 					next = this->_ptr;
@@ -82,6 +83,7 @@ namespace ft
 					while (next->left)
 						next = next->left;
 				}
+				*this = next;
 				return ( *this );
 			}
 			mapIterator operator++( int )		//it++
@@ -107,6 +109,7 @@ namespace ft
 					while (next->right)
 						next = next->right;
 				}
+				*this = next;
 				return ( *this );
 			}
 			mapIterator operator--( int )
@@ -162,7 +165,7 @@ namespace ft
 			friend mapIterator operator-(int n, const mapIterator& it)	{ return ( it - n ); }
 
 			value_type &operator*(void)		{ return ( this->_ptr->pair); }
-			value_type *operator->(void)	{ return ( &this->_ptr->pair); }
+			value_type *operator->(void) const	{ return ( &this->_ptr->pair); }
 			pointer		getPtr() const	 	{ return ( this->_ptr ); }
 	};
 
@@ -205,19 +208,20 @@ namespace ft
 			{
 				pointer next;
 				
-				if (!this->ptr->right)
+				if (!this->_ptr->right)
 				{
-					next = this->ptr;
+					next = this->_ptr;
 					while (next->parent && next == next->parent->right)
 						next = next->parent;
 					next = next->parent;
 				}
 				else
 				{
-					next = this->ptr->right;
+					next = this->_ptr->right;
 					while (next->left)
 						next = next->left;
 				}
+				this->_ptr = next;
 				return ( *this );
 			}
 			constMapIterator operator++( int )		//it++
@@ -243,6 +247,7 @@ namespace ft
 					while (next->right)
 						next = next->right;
 				}
+				this->_ptr = next;
 				return ( *this );
 			}
 			constMapIterator operator--( int )
@@ -306,7 +311,7 @@ namespace ft
 			bool operator>=(mapIterator<Key, T> const& rhs)			const	{ return ( this->_ptr >= rhs.getPtr()); }
 
 			const value_type &operator *( void )	const	{ return ( this->_ptr->pair ); }
-			const value_type *operator->( void ) 			{ return ( &this->_ptr->pair ); }
+			const value_type *operator->( void ) 	const		{ return ( &this->_ptr->pair ); }
 			pointer	getPtr()					const	{ return ( this->_ptr ); }
 	};
 

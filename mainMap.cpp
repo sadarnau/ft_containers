@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 11:47:50 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/15 18:09:33 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/15 18:50:46 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int	main ()
 	m.printTree();
 	std::cout << "\n";
 
+	ft::mapIterator<int, int> tmp = m.end();
+	--tmp;
 	std::cout << "begin() = " << m.begin()->first << " : " << m.begin()->second << "\n";
-	std::cout << "end() - 1 = " << (m.end() - 1)->first << " : " << (m.end() - 1)->second << "\n\n";
+	std::cout << "end() - 1 = " << tmp->first << " : " << (m.end() - 1)->second << "\n\n";
 	std::cout << "insert(begin(), (2, 20))\n";
 	m.insert(m.begin() ,std::make_pair(2, 20));
 	std::cout << "insert(end(), (13, 130))\n";
@@ -78,8 +80,15 @@ int	main ()
 	std::cout << "begin() = " << m.begin()->first << " : " << m.begin()->second << "\n";
 
 	std::cout << "\noperator[]:\nm[13] = " << m[13] << "\tm[0] = " << m[0] << "\tm[15] = " << m[15] << "\tm[42] = " << m[42] << "\n";
+	std::cout << "\nIn the tree we have : \n";
+	m.printTree();
+	std::cout << "\nm[42] = 420\n";
+	m[42] = 420;
+	std::cout << "\nIn the tree we have : \n";
+	m.printTree();
 
-	std::cout << "upper(10) = " << m.upper_bound(10)->first << "\n";
-
+	std::cout << "\nlower_bound(13) = " << m.lower_bound(13)->second << "\n";
+	std::cout << "upper_bound(13) = " << m.upper_bound(13)->second << "\n";
+	
 	return 0;
 }

@@ -2,7 +2,7 @@
 
 #define T1 char
 #define T2 int
-typedef _pair<const T1, T2> T3;
+typedef std::pair<const T1, T2> T3;
 
 template <class MAP>
 void	cmp(const MAP &lhs, const MAP &rhs)
@@ -36,7 +36,7 @@ int		main(void)
 	cmp(mp1, mp2); // 4
 	cmp(mp2, mp1); // 5
 
-	swap(mp1, mp2);
+	std::swap(mp1, mp2);
 
 	cmp(mp1, mp2); // 6
 	cmp(mp2, mp1); // 7

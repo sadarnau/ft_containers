@@ -1,0 +1,26 @@
+2c2
+< max_size: 288230376151711743
+---
+> max_size: 2305843009213693951
+19,24c19,24
+< map::count(-3)	returned [0]
+< map::count(12)	returned [1]
+< map::count(3)	returned [0]
+< map::count(35)	returned [0]
+< map::count(90)	returned [1]
+< map::count(100)	returned [0]
+---
+> map::count(-3)	returned [1]
+> map::count(12)	returned [0]
+> map::count(3)	returned [1]
+> map::count(35)	returned [1]
+> map::count(90)	returned [0]
+> map::count(100)	returned [1]
+26c26
+< max_size: 288230376151711743
+---
+> max_size: 2305843009213693951
+37c37
+< const map.count(80): [1]
+---
+> const map.count(80): [0]
