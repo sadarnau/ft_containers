@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 12:43:14 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 14:40:34 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:29:47 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ namespace ft
 
 		public:
 			revVectorIterator( void ) : _ptr(NULL) {}
-			revVectorIterator( const revVectorIterator &rhs ) { *this = rhs; }
-			revVectorIterator( const vectorIterator<T> &rhs ) { *this = rhs; }
-			revVectorIterator( pointer ptr ) : _ptr( ptr ) {}
-			~revVectorIterator( void ) {}
+			revVectorIterator( const revVectorIterator &rhs )	{ *this = rhs; }
+			revVectorIterator( const vectorIterator<T> &rhs )	{ *this = rhs; }
+			revVectorIterator( pointer ptr ) : _ptr( ptr )		{}
+			~revVectorIterator( void )							{}
 
 			revVectorIterator &operator=( const revVectorIterator &rhs )
 			{
@@ -139,13 +139,13 @@ namespace ft
 			pointer							_ptr;
 
 		public:
-			constRevVectorIterator( void ) : _ptr(NULL) {}
+			constRevVectorIterator( void ) : _ptr(NULL) 				{}
 			constRevVectorIterator( const constRevVectorIterator &rhs )	{ *this = rhs; }
 			constRevVectorIterator( const revVectorIterator<T> &rhs )	{ *this = rhs; }
 			constRevVectorIterator( const vectorIterator<T> &rhs )		{ *this = rhs; }
 			constRevVectorIterator( const constVectorIterator<T> &rhs )	{ *this = rhs; }
-			constRevVectorIterator( pointer ptr ) : _ptr( ptr ) {}
-			~constRevVectorIterator( void ) {}
+			constRevVectorIterator( pointer ptr ) : _ptr( ptr ) 		{}
+			~constRevVectorIterator( void ) 							{}
 
 			constRevVectorIterator &operator=( const constRevVectorIterator &rhs )
 			{

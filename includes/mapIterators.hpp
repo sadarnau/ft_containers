@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 11:23:41 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/15 19:19:17 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:24:42 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,16 @@ namespace ft
 		BTNode *right;
 		BTNode *parent;
 		std::pair<Key, T> pair;
-		// bool end;
+		bool end;
 	};
 
 	template <class Key, class T>
 	class mapIterator
 	{
 		public:
-			typedef std::pair<Key, T> value_type;
-			typedef std::pair<Key, T>& reference;
-			typedef BTNode<Key, T>* pointer;
-			
-			// typedef T						value_type;
-			// typedef value_type&				reference;
-			// typedef const value_type&		const_reference;
-			// typedef BTNode<Key, T>*				pointer;
-			// typedef BTNode<Key, T> const *		const_pointer;
+			typedef std::pair<Key, T>		value_type;
+			typedef std::pair<Key, T>&		reference;
+			typedef BTNode<Key, T>*			pointer;
 			typedef typename std::ptrdiff_t difference_type;
 	
 		private:
@@ -164,33 +158,27 @@ namespace ft
 			friend mapIterator operator+(int n, const mapIterator& it)	{ return ( it + n ); }
 			friend mapIterator operator-(int n, const mapIterator& it)	{ return ( it - n ); }
 
-			value_type &operator*(void)		{ return ( this->_ptr->pair); }
-			value_type *operator->(void) const	{ return ( &this->_ptr->pair); }
-			pointer		getPtr() const	 	{ return ( this->_ptr ); }
+			value_type &operator*(void)				{ return ( this->_ptr->pair); }
+			value_type *operator->(void)	const	{ return ( &this->_ptr->pair); }
+			pointer		getPtr() 			const 	{ return ( this->_ptr ); }
 	};
 
 	template <class Key, class T>
 	class constMapIterator
 	{
 		public:
-				typedef std::pair<Key, T> value_type;
-			typedef std::pair<Key, T>& reference;
-			typedef BTNode<Key, T>* pointer;
-			
-			// typedef T						value_type;
-			// typedef value_type&				reference;
-			// typedef const value_type&		const_reference;
-			// typedef BTNode<Key, T>*				pointer;
-			// typedef BTNode<Key, T> const *			const_pointer;
-			typedef typename std::ptrdiff_t difference_type;
+			typedef std::pair<Key, T>		value_type;
+			typedef std::pair<Key, T>&		reference;
+			typedef BTNode<Key, T>*			pointer;
+			typedef typename std::ptrdiff_t	difference_type;
 
 		private:
 			pointer							_ptr;
 
 		public:
 			constMapIterator( void ) : _ptr(NULL)				{}
-			constMapIterator( const constMapIterator &rhs )	{ *this = rhs; }
-			constMapIterator( const mapIterator<Key, T> &rhs )		{ *this = rhs; }
+			constMapIterator( const constMapIterator &rhs )		{ *this = rhs; }
+			constMapIterator( const mapIterator<Key, T> &rhs )	{ *this = rhs; }
 			constMapIterator( pointer ptr ) : _ptr( ptr )		{}
 			~constMapIterator( void )							{}
 
@@ -297,22 +285,22 @@ namespace ft
 			friend constMapIterator operator+(int n, const constMapIterator& it)	{ return (it + n); }
 			friend constMapIterator operator-(int n, const constMapIterator& it)	{ return (it - n); }
 
-			bool operator !=( const constMapIterator &rhs )	const	{ return ( this->_ptr != rhs._ptr ); }
-			bool operator!=( const mapIterator<Key, T> &rhs )		const	{ return ( this->_ptr != rhs.getPtr() ); }
+			bool operator !=( const constMapIterator &rhs )		const	{ return ( this->_ptr != rhs._ptr ); }
+			bool operator!=( const mapIterator<Key, T> &rhs )	const	{ return ( this->_ptr != rhs.getPtr() ); }
 			bool operator ==(constMapIterator const& rhs)		const	{ return ( this->_ptr == rhs._ptr); }
-			bool operator==( const mapIterator<Key, T> &rhs )		const	{ return ( this->_ptr == rhs.getPtr() ); }
+			bool operator==( const mapIterator<Key, T> &rhs )	const	{ return ( this->_ptr == rhs.getPtr() ); }
 			bool operator <(constMapIterator const& rhs)		const	{ return ( this->_ptr < rhs._ptr); }
-			bool operator<( const mapIterator<Key, T> &rhs )		const	{ return ( this->_ptr < rhs.getPtr() ); }
+			bool operator<( const mapIterator<Key, T> &rhs )	const	{ return ( this->_ptr < rhs.getPtr() ); }
 			bool operator <=(constMapIterator const& rhs)		const	{ return ( this->_ptr <= rhs._ptr); }
-			bool operator<=(mapIterator<Key, T> const& rhs)			const	{ return ( this->_ptr <= rhs.getPtr()); }
+			bool operator<=(mapIterator<Key, T> const& rhs)		const	{ return ( this->_ptr <= rhs.getPtr()); }
 			bool operator >(constMapIterator const& rhs)		const	{ return ( this->_ptr > rhs._ptr); }
-			bool operator>(mapIterator<Key, T> const& rhs)			const	{ return ( this->_ptr > rhs.getPtr()); }
+			bool operator>(mapIterator<Key, T> const& rhs)		const	{ return ( this->_ptr > rhs.getPtr()); }
 			bool operator >=(constMapIterator const& rhs)		const	{ return ( this->_ptr >= rhs._ptr); }
-			bool operator>=(mapIterator<Key, T> const& rhs)			const	{ return ( this->_ptr >= rhs.getPtr()); }
+			bool operator>=(mapIterator<Key, T> const& rhs)		const	{ return ( this->_ptr >= rhs.getPtr()); }
 
 			const value_type &operator *( void )	const	{ return ( this->_ptr->pair ); }
-			const value_type *operator->( void ) 	const		{ return ( &this->_ptr->pair ); }
-			pointer	getPtr()					const	{ return ( this->_ptr ); }
+			const value_type *operator->( void ) 	const	{ return ( &this->_ptr->pair ); }
+			pointer	getPtr()						const	{ return ( this->_ptr ); }
 	};
 
 	template <class Key, class T>
@@ -351,8 +339,5 @@ namespace ft
 		return (lhs.getPtr() >= rhs.getPtr());
 	}
 }
-
-
-
 
 #endif

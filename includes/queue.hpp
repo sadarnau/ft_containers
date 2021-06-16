@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:09:59 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 17:16:48 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:28:38 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 			typedef size_t		size_type;
 
 		private:
-			container_type	c;
+			container_type		c;
 
 		public:
 
@@ -36,14 +36,13 @@ namespace ft
 
 	//(constructor) :
 
-		explicit queue (const container_type& ctnr = container_type()) : c(ctnr)
-		{ return ;}
+		explicit queue (const container_type& ctnr = container_type()) : c(ctnr) { return ;}
 	
 		~queue(void)						{ return ; }
 
-		bool empty() const					{ return ( c.empty() ); }
+		bool empty() 				const	{ return ( c.empty() ); }
 	
-		size_type size() const				{ return ( c.size() ); }
+		size_type size()			const	{ return ( c.size() ); }
 	
 		value_type& front()					{ return ( c.front() ); }
 		const value_type& front()	const	{ return ( c.front() ); }

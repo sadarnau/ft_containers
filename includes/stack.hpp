@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 16:48:37 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 17:17:10 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:30:17 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ namespace ft
 			typedef size_t		size_type;
 
 		private:
-			container_type	c;
+			container_type		c;
 
 		public:
 
@@ -36,8 +36,7 @@ namespace ft
 
 	//(constructor) :
 
-		explicit stack (const container_type& ctnr = container_type()) : c(ctnr)
-		{ return ;}
+		explicit stack (const container_type& ctnr = container_type()) : c(ctnr) { return ;}
 	
 		~stack(void) 						{ return ; }
 

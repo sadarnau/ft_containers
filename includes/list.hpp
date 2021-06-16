@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/15 14:19:10 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:27:26 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ namespace ft
 			typedef ft::revListIterator<T>		reverse_iterator;
 			typedef ft::constRevListIterator<T>	const_reverse_iterator;
 			typedef ft::node<T>					node_type;
-			typedef node_type*									node_ptr;
+			typedef node_type*					node_ptr;
 
 		private:
 			node<T>			*_head;
@@ -149,10 +149,10 @@ namespace ft
 		ELEMENT ACCESS
 	*/
 
-		reference		front( void )	{ return( this->_head->next->data ); }
-		const_reference front()	const	{ return( this->_head->next->data ); }
-		reference		back( void )	{ return( this->_tail->prev->data ); }
-		const_reference back()	const	{ return( this->_tail->prev->data ); }
+		reference		front( void )			{ return( this->_head->next->data ); }
+		const_reference front()			const	{ return( this->_head->next->data ); }
+		reference		back( void )			{ return( this->_tail->prev->data ); }
+		const_reference back()			const	{ return( this->_tail->prev->data ); }
 
 
 	/*

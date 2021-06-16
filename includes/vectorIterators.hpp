@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/09 16:16:59 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:31:30 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ namespace ft
 			pointer							_ptr;
 
 		public:
-			vectorIterator( void ) : _ptr(NULL) {}
+			vectorIterator( void ) : _ptr(NULL) 		{}
 			vectorIterator( const vectorIterator &rhs ) { *this = rhs; }
 			vectorIterator( pointer ptr ) : _ptr( ptr ) {}
-			~vectorIterator( void ) {}
+			~vectorIterator( void )						{}
 
 			vectorIterator &operator=( const vectorIterator &rhs )
 			{
@@ -131,10 +131,10 @@ namespace ft
 			pointer							_ptr;
 
 		public:
-			constVectorIterator( void ) : _ptr(NULL) {}
-			constVectorIterator( const constVectorIterator &rhs ) { *this = rhs; }
-			constVectorIterator( const vectorIterator<T> &rhs ) { *this = rhs; }
-			constVectorIterator( pointer ptr ) : _ptr( ptr ) {}
+			constVectorIterator( void ) : _ptr(NULL) 				{}
+			constVectorIterator( const constVectorIterator &rhs )	{ *this = rhs; }
+			constVectorIterator( const vectorIterator<T> &rhs )		{ *this = rhs; }
+			constVectorIterator( pointer ptr ) : _ptr( ptr )		{}
 			~constVectorIterator( void ) {}
 
 			constVectorIterator &operator=( const constVectorIterator &rhs )

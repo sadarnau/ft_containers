@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 15:43:57 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 15:40:41 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/16 16:33:24 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,11 +108,11 @@ namespace ft
 			difference_type operator -(revListIterator b) { return (this->_ptr - b._ptr); }	// a - b
 			difference_type operator +(revListIterator b) { return (this->_ptr + b._ptr); }	// a + b
 		
-			bool operator!=( const revListIterator &rhs )	const	{ return ( this->_ptr != rhs._ptr ); }
-			bool operator ==(revListIterator const& rhs)	const	{ return ( this->_ptr == rhs._ptr); }
-			bool operator <(revListIterator const &rhs)		const	{ return ( this->_ptr > rhs._ptr); }
+			bool operator !=(revListIterator const &rhs)	const	{ return ( this->_ptr != rhs._ptr ); }
+			bool operator ==(revListIterator const &rhs)	const	{ return ( this->_ptr == rhs._ptr); }
+			bool operator < (revListIterator const &rhs)	const	{ return ( this->_ptr > rhs._ptr); }
 			bool operator <=(revListIterator const &rhs)	const	{ return ( this->_ptr >= rhs._ptr); }
-			bool operator >(revListIterator const &rhs)		const	{ return ( this->_ptr < rhs._ptr); }
+			bool operator > (revListIterator const &rhs)	const	{ return ( this->_ptr < rhs._ptr); }
 			bool operator >=(revListIterator const &rhs)	const	{ return ( this->_ptr <= rhs._ptr); }
 
 			friend revListIterator operator+(int n, const revListIterator& it)	{ return (it + n); }
