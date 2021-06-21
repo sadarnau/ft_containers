@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 15:41:38 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/21 17:37:57 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 
 namespace ft
 {
-	template < typename T >
-	struct node
-	{
-		node	*prev;
-		node	*next;
-		T		data;
-	};
-
 	template <typename T>
 	class listIterator
 	{
@@ -36,10 +28,8 @@ namespace ft
 			typedef node<T> const *			const_pointer;
 			typedef typename std::ptrdiff_t difference_type;
 
-		private:
 			pointer							_ptr;
 
-		public:
 			listIterator( void ) : _ptr(NULL)		{}
 			listIterator( const listIterator &rhs )	{ *this = rhs; }
 			listIterator( pointer ptr ) : _ptr(ptr)	{}
@@ -133,9 +123,9 @@ namespace ft
 	class constListIterator
 	{
 		public:
-			typedef T						value_type;
-			typedef value_type&				reference;
-			typedef const value_type&		const_reference;
+			typedef const T						value_type;
+			// typedef value_type&				reference;
+			typedef const value_type&		reference;
 			typedef node<T>*				pointer;
 			typedef node<T> const *			const_pointer;
 			typedef typename std::ptrdiff_t difference_type;
@@ -236,8 +226,8 @@ namespace ft
 			bool operator >=(constListIterator const& rhs)		const	{ return ( this->_ptr >= rhs._ptr); }
 			bool operator>=(listIterator<T> const& rhs)			const	{ return ( this->_ptr >= rhs.getPtr()); }
 
-			const_reference operator *( void )	const	{ return ( this->_ptr->data ); }
-			const value_type * operator->() 			{ return ( &this->_ptr->data ); }
+			reference operator *( void )	const	{ return ( this->_ptr->data ); }
+			value_type * operator->() 			{ return ( &this->_ptr->data ); }
 			pointer	getPtr()					const	{ return ( this->_ptr ); }
 	};
 

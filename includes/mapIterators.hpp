@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/12 11:23:41 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/16 16:24:42 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/21 16:16:14 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,42 +14,23 @@
 # define MAPITERATORS_HPP
 
 # include "map.hpp"
+# include "utils.hpp"
 # include <utility>
 # include <iostream>
 
 namespace ft
 {
-	template <typename T>
-	void	swap(T & a, T & b)
-	{
-		T tmp = a;
-		a = b;
-		b = tmp;
-	}
-
-	template <class Key, class T>
-	struct BTNode
-	{
-		BTNode *left;
-		BTNode *right;
-		BTNode *parent;
-		std::pair<Key, T> pair;
-		bool end;
-	};
-
 	template <class Key, class T>
 	class mapIterator
 	{
 		public:
-			typedef std::pair<Key, T>		value_type;
-			typedef std::pair<Key, T>&		reference;
+			typedef ft::pair<Key, T>		value_type;
+			typedef ft::pair<Key, T>&		reference;
 			typedef BTNode<Key, T>*			pointer;
 			typedef typename std::ptrdiff_t difference_type;
 	
-		private:
 			pointer							_ptr;
 
-		public:
 			mapIterator( void ) : _ptr(NULL)		{}
 			mapIterator( const mapIterator &rhs )	{ *this = rhs; }
 			mapIterator( pointer ptr ) : _ptr(ptr)	{}
@@ -167,10 +148,10 @@ namespace ft
 	class constMapIterator
 	{
 		public:
-			typedef std::pair<Key, T>		value_type;
-			typedef std::pair<Key, T>&		reference;
-			typedef BTNode<Key, T>*			pointer;
-			typedef typename std::ptrdiff_t	difference_type;
+			typedef const ft::pair<Key, T>		value_type;
+			typedef ft::pair<Key, T>&			reference;
+			typedef BTNode<Key, T>*				pointer;
+			typedef typename std::ptrdiff_t		difference_type;
 
 		private:
 			pointer							_ptr;
@@ -298,8 +279,8 @@ namespace ft
 			bool operator >=(constMapIterator const& rhs)		const	{ return ( this->_ptr >= rhs._ptr); }
 			bool operator>=(mapIterator<Key, T> const& rhs)		const	{ return ( this->_ptr >= rhs.getPtr()); }
 
-			const value_type &operator *( void )	const	{ return ( this->_ptr->pair ); }
-			const value_type *operator->( void ) 	const	{ return ( &this->_ptr->pair ); }
+			value_type &operator *( void )	const	{ return ( this->_ptr->pair ); }
+			value_type *operator->( void ) 	const	{ return ( &this->_ptr->pair ); }
 			pointer	getPtr()						const	{ return ( this->_ptr ); }
 	};
 

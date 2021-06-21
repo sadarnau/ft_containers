@@ -67,7 +67,8 @@
 		"type_traits": "cpp",
 		"typeinfo": "cpp",
 		"__config": "cpp",
-		"clocale": "cpp"
+		"clocale": "cpp",
+		"set": "cpp"
 	},
     "C_Cpp.dimInactiveRegions": false
 }

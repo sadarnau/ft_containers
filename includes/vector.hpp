@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/10 17:57:06 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/21 16:53:51 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <limits>
 # include "vectorIterators.hpp"
 # include "revVectorIterators.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -35,8 +36,8 @@ namespace ft
 			typedef std::ptrdiff_t					difference_type;
 			typedef ft::vectorIterator<T>			iterator;
 			typedef ft::constVectorIterator<T>		const_iterator;
-			typedef ft::revVectorIterator<T>		reverse_iterator;
-			typedef ft::constRevVectorIterator<T>	const_reverse_iterator;
+			typedef ft::revVectorIterator<T, iterator>		reverse_iterator;
+			typedef ft::revVectorIterator<T, const_iterator>	const_reverse_iterator;
 
 		private:
 			pointer			_container;
@@ -115,10 +116,10 @@ namespace ft
 		const_iterator			begin(void) const	{ return ( const_iterator(this->_container) ); }
 		iterator				end(void) 			{ return ( iterator(this->_container + this->_size) ); }
 		const_iterator			end(void) 	const	{ return ( const_iterator(this->_container + this->_size) ); }
-		reverse_iterator 		rbegin()			{ return ( reverse_iterator(this->_container + this->_size - 1) ); }
-		const_reverse_iterator	rbegin() 	const	{ return ( const_reverse_iterator(this->_container + this->_size - 1) ); }
-		reverse_iterator 		rend()				{ return ( reverse_iterator(this->_container - 1) ); }
-		const_reverse_iterator	rend() 		const	{ return ( const_reverse_iterator(this->_container - 1) ); }
+		reverse_iterator 		rbegin()			{ return ( reverse_iterator(this->_container + this->_size) ); }
+		const_reverse_iterator	rbegin() 	const	{ return ( const_reverse_iterator(this->_container + this->_size) ); }
+		reverse_iterator 		rend()				{ return ( reverse_iterator(this->_container) ); }
+		const_reverse_iterator	rend() 		const	{ return ( const_reverse_iterator(this->_container) ); }
 
 	/*
 		CAPACITY
@@ -194,7 +195,7 @@ namespace ft
 	*/
 
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last)
+		void assign (typename ft::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
 		{
 			InputIterator	tmp = first;
 			size_t		n = 0;
@@ -275,7 +276,7 @@ namespace ft
 		}
 
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, typename ft::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
 		{
 			InputIterator	tmp2 = first;
 			difference_type	n = 0;

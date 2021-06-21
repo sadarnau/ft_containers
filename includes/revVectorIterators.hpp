@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/09 12:43:14 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/16 16:29:47 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/21 17:09:45 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,40 +19,43 @@
 
 namespace ft
 {
-	template <typename T>
+	template <typename T, typename Iterator>
 	class revVectorIterator
 	{
 		public:
-			typedef T						value_type;
-			typedef value_type&				reference;
-			typedef const value_type&		const_reference;
-			typedef T*						pointer;
-			typedef T const *				const_pointer;
-			typedef typename std::ptrdiff_t difference_type;
+			typedef	Iterator							iteratorType;
+			typedef typename Iterator::difference_type	difference_type;
+			typedef typename Iterator::reference		reference;
+			typedef typename Iterator::pointer			pointer;
+			typedef typename Iterator::value_type		value_type;
 		
 		private:
-			pointer							_ptr;
+			iteratorType								_it;
 
 		public:
-			revVectorIterator( void ) : _ptr(NULL) {}
-			revVectorIterator( const revVectorIterator &rhs )	{ *this = rhs; }
-			revVectorIterator( const vectorIterator<T> &rhs )	{ *this = rhs; }
-			revVectorIterator( pointer ptr ) : _ptr( ptr )		{}
-			~revVectorIterator( void )							{}
+			revVectorIterator( void ) : _it(NULL) 			{}
+			revVectorIterator( const iteratorType rhs ) : _it(rhs) {};
+
+			template <typename It>
+			revVectorIterator( const revVectorIterator<T, It> &rhs ) : _it(rhs.base()) {};
+
+			~revVectorIterator( void )	{}
+
 
 			revVectorIterator &operator=( const revVectorIterator &rhs )
 			{
-				this->_ptr = rhs._ptr;
+				this->_it = rhs._it;
 				return ( *this );
 			}
-			revVectorIterator &operator=( const vectorIterator<T> &rhs )
+			template <typename It>
+			revVectorIterator &operator=( const revVectorIterator<T, It> &rhs )
 			{
-				this->_ptr = rhs.getPtr();
+				this->_it = rhs.base();
 				return ( *this );
 			}
 			revVectorIterator &operator++( void )	//++it
 			{
-				this->_ptr--;
+				--_it;
 				return ( *this );
 			}
 			revVectorIterator operator++( int )		//it++
@@ -63,7 +66,7 @@ namespace ft
 			}
 			revVectorIterator &operator--( void )
 			{
-				this->_ptr++;
+				++_it;
 				return ( *this );
 			}
 			revVectorIterator operator--( int )
@@ -105,191 +108,73 @@ namespace ft
 				return (*this);
 			}
 
-			difference_type operator -(revVectorIterator b) { return (this->_ptr - b._ptr); }	// a - b
-			difference_type operator +(revVectorIterator b) { return (this->_ptr + b._ptr); }	// a + b
-			
-			bool operator !=(revVectorIterator const &rhs )		const	{ return ( this->_ptr != rhs._ptr ); }
-			bool operator ==(revVectorIterator const &rhs) 		const	{ return ( this->_ptr == rhs._ptr); }
-			bool operator <(revVectorIterator const &rhs) 		const	{ return ( this->_ptr > rhs._ptr); }
-			bool operator <=(revVectorIterator const &rhs)		const	{ return ( this->_ptr >= rhs._ptr); }
-			bool operator >(revVectorIterator const &rhs)		const	{ return ( this->_ptr < rhs._ptr); }
-			bool operator >=(revVectorIterator const &rhs)		const	{ return ( this->_ptr <= rhs._ptr); }
+			template <class It>
+			difference_type operator +(revVectorIterator<T, It> b) 							{ return ( this->_it + b.base() ); }	// a + b
+			difference_type operator -(revVectorIterator<T, ft::constVectorIterator<T> > b) { return ( b.base() - this->_it ); }	// a - b
+
+
+			bool operator !=(revVectorIterator const &rhs )		const	{ return ( this->_it != rhs.base()  ); }
+			bool operator ==(revVectorIterator const &rhs) 		const	{ return ( this->_it == rhs.base() ); }
+			bool operator <(revVectorIterator const &rhs) 		const	{ return ( this->_it > rhs.base() ); }
+			bool operator <=(revVectorIterator const &rhs)		const	{ return ( this->_it >= rhs.base() ); }
+			bool operator >(revVectorIterator const &rhs)		const	{ return ( this->_it < rhs.base() ); }
+			bool operator >=(revVectorIterator const &rhs)		const	{ return ( this->_it <= rhs.base() ); }
 
 			friend revVectorIterator operator+(int n, const revVectorIterator& it)	{ return (it + n); }
 			friend revVectorIterator operator-(int n, const revVectorIterator& it)	{ return (it - n); }
 
-			reference operator*( void )	{ return ( *this->_ptr ); }
-			pointer operator->() 		{ return (this->_ptr); }
+			reference operator*( void )
+			{
+				revVectorIterator tmp(*this);
+				--tmp._it;
+			
+				return ( *tmp._it.getPtr() );
+			}
+			pointer operator->( void )
+			{
+				revVectorIterator tmp(*this);
+				--tmp._it;
+			
+				return ( tmp._it.getPtr() );
+			}
 			reference operator[](int n)	{ return (*(*this + n)); }
-			pointer	getPtr() const 		{ return( this->_ptr ); }
-	};
-
-	template <typename T>
-	class constRevVectorIterator
-	{
-		public:
-			typedef T						value_type;
-			typedef value_type&				reference;
-			typedef const value_type&		const_reference;
-			typedef T*						pointer;
-			typedef T const *				const_pointer;
-			typedef typename std::ptrdiff_t difference_type;
-
-		private:
-			pointer							_ptr;
-
-		public:
-			constRevVectorIterator( void ) : _ptr(NULL) 				{}
-			constRevVectorIterator( const constRevVectorIterator &rhs )	{ *this = rhs; }
-			constRevVectorIterator( const revVectorIterator<T> &rhs )	{ *this = rhs; }
-			constRevVectorIterator( const vectorIterator<T> &rhs )		{ *this = rhs; }
-			constRevVectorIterator( const constVectorIterator<T> &rhs )	{ *this = rhs; }
-			constRevVectorIterator( pointer ptr ) : _ptr( ptr ) 		{}
-			~constRevVectorIterator( void ) 							{}
-
-			constRevVectorIterator &operator=( const constRevVectorIterator &rhs )
-			{
-				this->_ptr = rhs._ptr;
-				return ( *this );
-			}
-			constRevVectorIterator &operator=( const revVectorIterator<T> &rhs )
-			{
-				this->_ptr = rhs.getPtr();
-				return ( *this );
-			}
-			constRevVectorIterator &operator=( const constVectorIterator<T> &rhs )
-			{
-				this->_ptr = rhs.getPtr();
-				return ( *this );
-			}
-			constRevVectorIterator &operator=( const vectorIterator<T> &rhs )
-			{
-				this->_ptr = rhs.getPtr();
-				return ( *this );
-			}
-			constRevVectorIterator &operator++( void )	//++it
-			{
-				this->_ptr--;
-				return ( *this );
-			}
-			constRevVectorIterator operator++( int )	//it++
-			{
-				constRevVectorIterator tmp(*this);
-				operator++();
-				return (tmp);
-			}
-			constRevVectorIterator &operator--( void )
-			{
-				this->_ptr++;
-				return ( *this );
-			}
-			constRevVectorIterator operator--( int )
-			{
-				constRevVectorIterator tmp(*this);
-				operator--();
-				return (tmp);
-			}
-			constRevVectorIterator operator+(int n) const
-			{
-				constRevVectorIterator tmp(*this);
-				while (n--)
-					tmp++;
-				return (tmp);
-			}
-			constRevVectorIterator operator-(int n) const
-			{
-				constRevVectorIterator tmp(*this);
-				while (n--)
-					tmp--;
-				return (tmp);
-			}
-			constRevVectorIterator &operator+=(int n)
-			{
-				while (n > 0)
-				{
-					operator++();
-					n--;
-				}
-				return (*this);
-			}
-			constRevVectorIterator &operator-=(int n)
-			{
-				while (n > 0)
-				{
-					operator--();
-					n--;
-				}
-				return (*this);
-			}
-
-			difference_type operator -(constRevVectorIterator b)		{ return (_ptr - b._ptr); } 	// a - b
-			difference_type operator -(constRevVectorIterator b) const	{ return (_ptr - b._ptr); }
-			difference_type operator -(revVectorIterator<T> b) 			{ return (b.getPtr() - _ptr); }
-			difference_type operator +(constRevVectorIterator b)		{ return (_ptr + b._ptr); } 	// a + b
-			difference_type operator +(constRevVectorIterator b) const	{ return (_ptr + b._ptr); }
-
-			friend constRevVectorIterator operator+(int n, const constRevVectorIterator& it)	{ return (it + n); }
-			friend constRevVectorIterator operator-(int n, const constRevVectorIterator& it)	{ return (it - n); }
-
-			bool operator !=( const constRevVectorIterator &rhs )	const { return ( this->_ptr != rhs._ptr ); }
-			bool operator!=( const revVectorIterator<T> &rhs )		const { return ( this->_ptr != rhs.getPtr() ); }
-			bool operator ==(constRevVectorIterator const& rhs)		const { return ( this->_ptr == rhs._ptr); }
-			bool operator==( const revVectorIterator<T> &rhs )		const { return ( this->_ptr == rhs.getPtr() ); }
-			bool operator <(constRevVectorIterator const& rhs)		const { return ( this->_ptr > rhs._ptr); }
-			bool operator<( const revVectorIterator<T> &rhs )		const { return ( this->_ptr > rhs.getPtr() ); }
-			bool operator <=(constRevVectorIterator const& rhs)		const { return ( this->_ptr >= rhs._ptr); }
-			bool operator<=(revVectorIterator<T> const& rhs)		const { return ( this->_ptr >= rhs.getPtr()); }
-			bool operator >(constRevVectorIterator const& rhs)		const { return ( this->_ptr < rhs._ptr); }
-			bool operator>(revVectorIterator<T> const& rhs)			const { return ( this->_ptr < rhs.getPtr()); }
-			bool operator >=(constRevVectorIterator const& rhs)		const { return ( this->_ptr <= rhs._ptr); }
-			bool operator>=(revVectorIterator<T> const& rhs)		const { return ( this->_ptr <= rhs.getPtr()); }
-						
-			const_reference operator *( void ) 	{ return ( *this->_ptr ); }
-			const_pointer operator->()	const	{ return (this->_ptr); }
-			pointer	getPtr() 			const 	{ return( this->_ptr ); }
+			iteratorType base() const	{ return ( _it ); }
 	};
 
 	template<typename T>
-	bool operator==(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator==(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() == rhs.getPtr());
+		return (lhs.base() == rhs.base());
 	}
 
 	template<typename T>
-	bool operator!=(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator!=(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() != rhs.getPtr());
+		return (lhs.base() != rhs.base());
 	}
 
 	template<typename T>
-	bool operator<(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator<(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() > rhs.getPtr());
+		return (lhs.base() > rhs.base());
 	}
 
 	template<typename T>
-	bool operator>(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator>(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() < rhs.getPtr());
+		return (lhs.base() < rhs.base());
 	}
 
 	template<typename T>
-	bool operator<=(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator<=(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() >= rhs.getPtr());
+		return (lhs.base() >= rhs.base());
 	}
 
 	template<typename T>
-	bool operator>=(const ft::revVectorIterator<T> lhs,
-			const ft::constRevVectorIterator<T> rhs)
+	bool operator>=(const ft::revVectorIterator<T, ft::vectorIterator<T> > lhs, const ft::revVectorIterator<T, ft::constVectorIterator<T> > rhs)
 	{
-		return (lhs.getPtr() <= rhs.getPtr());
+		return (lhs.base() <= rhs.base());
 	}
-
 }
 #endif
