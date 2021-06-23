@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/21 17:37:39 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/23 11:44:31 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ namespace ft
 		private:
 			node<T>			*_tail;
 			size_type		_length;
+			Alloc		_alloc;
 
 		public:
 
@@ -217,7 +218,7 @@ namespace ft
 			position._ptr->prev->next = next;
 			next->prev = position._ptr->prev;
 
-			delete (position._ptr);
+			delete(position._ptr);
 
 			this->_length--;
 
@@ -300,7 +301,7 @@ namespace ft
 		{
 			for(iterator it = this->begin(); it != this->end(); it++)
 				if (*it == val)
-					erase(it);
+					it = erase(it);
 
 			return ;
 		}
@@ -308,9 +309,15 @@ namespace ft
 		template <class Predicate>
   		void remove_if (Predicate pred)
 		{
-			for(iterator it = this->begin(); it != this->end(); it++)
+			iterator	it = this->begin();
+
+			while(it != this->end())
+			{
 				if (pred(*it))
-					erase(it);
+					it = erase(it);
+				else
+					it++;
+			}
 
 			return ;
 		}
@@ -386,22 +393,23 @@ namespace ft
 		template <class Compare>
 		void sort (Compare comp)
 		{
-			iterator 	it = this->begin(), it2;
-			size_type	size = this->_length;
+			iterator it1 = this->begin(), it2 = it1 + 1;
 
-			while (size--)
+			while (it2 != this->end())
 			{
-				it = this->begin();
-				it2 = it + 1;
-				while (it2 != this->end())
+				if (comp(*it2, *it1))
 				{
-					if (!comp(*it, *it2))
-						this->splice(it, *this, it2);
-					else
-						it++;
-					it2 = it + 1;
+					this->splice(it1, *this, it2);
+					it1 = this->begin();
+					it2 = it1 + 1;
+				}
+				else
+				{
+					it1++;
+					it2++;
 				}
 			}
+
 			return;
 		}
 

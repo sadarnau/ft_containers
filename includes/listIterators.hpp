@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 10:49:10 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/21 17:37:57 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/23 11:01:30 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define LISTITERATORS_HPP
 
 # include "list.hpp"
+# include "utils.hpp"
 
 namespace ft
 {

@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/21 16:53:51 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/23 18:18:41 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ namespace ft
 		: _container(0), _size(0), _capacity(0), _alloc(alloc)
 		{
 			this->_container = this->_alloc.allocate(0);
-			insert(this->begin(), static_cast<size_type>(n), static_cast<value_type>(val));
+			insert(this->begin(), n, val);
 
 			return ;
 		}
@@ -73,7 +73,7 @@ namespace ft
 		vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
 		: _container(0), _size(0), _capacity(0), _alloc(alloc)
 		{
-			this->_alloc.allocate(0);
+			this->_container = this->_alloc.allocate(0);
 			this->assign(first, last);
 
 			return ;
@@ -91,7 +91,6 @@ namespace ft
 		~vector( void )
 		{ 
 			_alloc.deallocate( this->_container, this->_capacity );
-			// _alloc.destroy( this->_container, this->_capacity ); ???s
 
 			return ;
 		}
@@ -159,7 +158,7 @@ namespace ft
 				this->_capacity = n;
 				this->_container = tmp;
 			}
-
+			
 			return ;
 		}
 
@@ -198,12 +197,16 @@ namespace ft
 		void assign (typename ft::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
 		{
 			InputIterator	tmp = first;
-			size_t		n = 0;
+			size_type		n = 0;
 
-			while(tmp++ != last)
+			while(tmp != last)
+			{
+				tmp++;
 				n++;
+			}
 			this->clear();
 			this->reserve(n);
+	
 			for (InputIterator it = first; it != last; it++)
 				this->push_back(*it);
 
@@ -229,6 +232,7 @@ namespace ft
 			}
 			if ( this->_size == this->_capacity)
 				reserve(this->_capacity * 2);
+			
 			this->_container[this->_size] = data;
 			this->_size++;
 
@@ -258,19 +262,20 @@ namespace ft
 
 		void insert (iterator position, size_type n, const value_type& val)
 		{
-			size_t	i = this->_size + n;
+			size_type	cur = position - begin(), i = this->_size + n;
 
-			vector tmp(position, this->end());
-		
-			this->erase(position, this->end());
-			
 			this->reserve(i);
-			
-			while (n--)
-				this->push_back(val);
 
-			for (iterator it = tmp.begin(); it != tmp.end(); it++)
-				this->push_back(*it);
+			for (i = n + this->_size - 1; i > cur + n - 1; i--)
+			{
+				this->_alloc.construct(&this->_container[i], this->_container[i - n]);
+				this->_alloc.destroy(&this->_container[i - n]);
+			}
+			for (i = cur; i < cur + n; i++)
+			{
+				this->_alloc.construct(&this->_container[i], val);
+				this->_size++;
+			}
 
 			return ;
 		}
@@ -335,19 +340,11 @@ namespace ft
 		void swap (vector& x)
 		{
 			vector tmp;
+			ft::mySwap(this->_capacity, x._capacity);
+			ft::mySwap(this->_size, x._size);
+			ft::mySwap(this->_container, x._container);
 
-			tmp.exchange(x);
-			x.exchange(*this);
-			this->exchange(tmp);
 			return ;
-		}
-
-		void exchange(vector& x)
-		{
-			this->_container = x._container;
-			this->_size = x._size;
-			this->_capacity = x._capacity;
-			x._container = NULL;
 		}
 
 		void clear() { erase(this->begin(), this->end()); }

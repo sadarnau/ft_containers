@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/10 17:40:33 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/21 16:24:30 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/23 17:54:10 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -471,10 +471,13 @@ namespace ft
 		}
 		void erase (iterator first, iterator last)
 		{
+			iterator	tmp;
+			
 			while(first != last)
 			{
+				tmp = first + 1;
 				this->erase(first);
-				++first;
+				first = tmp;
 			}
 
 			return ;
