@@ -62,7 +62,6 @@ namespace ft
 			node			_root;
 			node			_end;
 			size_type		_length;
-			typename allocator_type::template rebind<BTNode<key_type, mapped_type> >::other _allocNode;
 
 		public:
 		
@@ -231,7 +230,12 @@ namespace ft
 
 		map& operator= (const map& x)
 		{
+			if (this == &x)
+				return (*this);
 			this->clear();
+			this->_alloc = x._alloc;
+			this->_comp = x._comp;
+			this->_length = 0;
 			this->insert(x.begin(), x.end());
 			return (*this);
 		}
@@ -494,10 +498,14 @@ namespace ft
 
 		void clear()
 		{
-			this->erase(begin(), end());
-			this->_root = newNode(key_type(), mapped_type(), NULL);
-			this->_end->parent = this->_root;
-			this->_root->right = this->_end;
+			if (this->_length != 0)
+			{
+				this->erase(begin(), end());
+				this->_root = newNode(key_type(), mapped_type(), NULL);
+				this->_end->parent = this->_root;
+				this->_root->right = this->_end;
+			}
+			
 			return ;
 		}
 
@@ -665,6 +673,8 @@ namespace ft
 	template < class Key, class T, class Compare, class Alloc>
 	bool operator>=(const map<Key, T, Compare, Alloc>& lhs, const map<Key, T, Compare, Alloc>& rhs)	{ return (!(lhs < rhs)); }
 
+	template < class Key, class T, class Compare, class Alloc>
+	void swap (map<Key, T, Compare, Alloc>& x, map<Key, T, Compare, Alloc>& y) { x.swap(y); }
 }
 
 #endif

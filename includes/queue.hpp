@@ -21,9 +21,9 @@ namespace ft
 	class queue
 	{
 		public:
-			typedef T			value_type;
-			typedef Container	container_type;
-			typedef size_t		size_type;
+			typedef T				value_type;
+			typedef Container		container_type;
+			typedef std::size_t		size_type;
 
 		private:
 			container_type		c;

@@ -34,13 +34,13 @@ int	main ()
 	ft::map<int, int> m;
 
 	std::cout << "insert(1,10) : bool = ";
-	std::cout << m.insert(std::make_pair(1, 10)).second << "\n";
+	std::cout << m.insert(ft::make_pair(1, 10)).second << "\n";
 	std::cout << "insert(1,15) : bool = ";
-	std::cout << m.insert(std::make_pair(1, 15)).second << "\n";
+	std::cout << m.insert(ft::make_pair(1, 15)).second << "\n";
 	std::cout << "insert(15, 150) : bool = ";
-	std::cout << m.insert(std::make_pair(15, 150)).second << "\n";
+	std::cout << m.insert(ft::make_pair(15, 150)).second << "\n";
 	std::cout << "insert(20, 200) : bool = ";
-	std::cout << m.insert(std::make_pair(20, 200)).second << "\n";
+	std::cout << m.insert(ft::make_pair(20, 200)).second << "\n";
 	std::cout << "find(1) : second = ";
 	std::cout << m.find(1)->second << "\n";
 	std::cout << m.find(1)->second << "\n";
@@ -58,16 +58,16 @@ int	main ()
 	std::cout << "begin() = " << m.begin()->first << " : " << m.begin()->second << "\n";
 	std::cout << "end() - 1 = " << tmp->first << " : " << (m.end() - 1)->second << "\n\n";
 	std::cout << "insert(begin(), (2, 20))\n";
-	m.insert(m.begin() ,std::make_pair(2, 20));
+	m.insert(m.begin() ,ft::make_pair(2, 20));
 	std::cout << "insert(end(), (13, 130))\n";
-	m.insert(m.end(), std::make_pair(13, 130));
+	m.insert(m.end(), ft::make_pair(13, 130));
 
 	std::cout << "\nIn the tree we have : \n";
 	m.printTree();
 	std::cout << "\n";
 	
 	std::cout << "insert(0, 1))\n";
-	m.insert(std::make_pair(0, 1));
+	m.insert(ft::make_pair(0, 1));
 	std::cout << "\nIn the tree we have : \n";
 	m.printTree();
 	std::cout << "\n";

@@ -68,7 +68,10 @@
 		"typeinfo": "cpp",
 		"__config": "cpp",
 		"clocale": "cpp",
-		"set": "cpp"
+		"set": "cpp",
+		"*.tcc": "cpp",
+		"fstream": "cpp",
+		"iomanip": "cpp"
 	},
     "C_Cpp.dimInactiveRegions": false
 }
