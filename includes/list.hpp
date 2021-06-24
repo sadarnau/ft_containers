@@ -299,9 +299,19 @@ namespace ft
 
 		void remove (const value_type& val)
 		{
-			for(iterator it = this->begin(); it != this->end(); it++)
+			iterator	tmp, it = this->begin();
+
+			while(it != this->end())
+			{
 				if (*it == val)
-					it = erase(it);
+				{
+					tmp = it + 1;
+					erase(it);
+					it = tmp;
+				}
+				else
+					it++;
+			}
 
 			return ;
 		}
@@ -324,7 +334,7 @@ namespace ft
 
 		void unique()
 		{
-			for(iterator it = this->begin(); it != this->end(); it++)
+			for(iterator it = this->begin(); it != this->end() - 1; it++)
 				if (*it == it.node()->next->data)
 				{
 					erase(it.node()->next);
