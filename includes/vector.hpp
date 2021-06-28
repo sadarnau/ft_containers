@@ -6,7 +6,7 @@
 /*   By: sadarnau <sadarnau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/02 16:23:17 by sadarnau          #+#    #+#             */
-/*   Updated: 2021/06/23 18:18:41 by sadarnau         ###   ########.fr       */
+/*   Updated: 2021/06/28 14:25:10 by sadarnau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ namespace ft
 		{
 			if (n < 0 || n >= this->_size)
 				throw (std::out_of_range("vector"));
+
 			return (this->_container[n]);
 		}
 
@@ -273,14 +274,22 @@ namespace ft
 		{
 			difference_type pos = position - begin();
 
-			vector tmp(position, this->end());
-		
-			this->erase(position, this->end());
+			if( position != this->end())
+			{
+				vector tmp(position, this->end());
 			
-			this->push_back(val);
+				this->erase(position, this->end());
+				
+				this->push_back(val);
 
-			for (iterator it = tmp.begin(); it != tmp.end(); it++)
-				this->push_back(*it);
+				for (iterator it = tmp.begin(); it != tmp.end(); it++)
+					this->push_back(*it);
+			}
+			else
+			{
+				push_back(val);
+				pos = this->_size - 1;
+			}
 
 			return (iterator(&_container[pos]));
 		}
@@ -310,37 +319,51 @@ namespace ft
 		void insert (iterator position, typename ft::enable_if<!std::numeric_limits<InputIterator>::is_integer, InputIterator>::type first, InputIterator last)
 		{
 			InputIterator	tmp2 = first;
-			difference_type	n = 0;
-			size_t			i = this->_capacity;
+			size_type	n = 0;
+			int			switchEnd = 0;
 
 			while (tmp2++ != last)
 				n++;
 
-	    	if (this->_size + n > this->_capacity)
+			if (this->_size)
 			{
-				if (this->_size * 2 >= this->_size + n)
-					i = this->_capacity * 2;
-				else
-					i = this->_size + n;
+				size_t			i = this->_capacity;
+
+				if (position == end())
+					switchEnd = 1;
+
+				if (this->_size + n > this->_capacity)
+				{
+					if (this->_size * 2 >= this->_size + n)
+						i = this->_capacity * 2;
+					else
+						i = this->_size + n;
+				}
+
+				vector tmp(position, this->end());
+
+				this->erase(position, this->end());
+				this->reserve(i);
+
+				while (first != last)
+					this->push_back(*first++);
+				if (!switchEnd)
+					for (iterator it = tmp.begin(); it != tmp.end(); it++)
+						this->push_back(*it);
 			}
-
-			vector tmp(position, this->end());
-
-			this->erase(position, this->end());
-			this->reserve(i);
-
-			while (first != last)
-				this->push_back(*first++);
-
-			for (iterator it = tmp.begin(); it != tmp.end(); it++)
-				this->push_back(*it);
+			else
+			{
+				this->reserve(n);
+				while (first != last)
+					this->push_back(*first++);
+			}
 
 			return ;
 		}
 
 		iterator erase (iterator position)
 		{
-			size_type pos = position - begin();
+			size_type pos = position - begin(), tmp = pos;
 
 			_alloc.destroy(&_container[pos]);
 			_size--;
@@ -352,7 +375,7 @@ namespace ft
 				pos++;
 			}
 
-			return (iterator(&_container[pos]));
+			return (iterator(&_container[tmp]));
 		}
 
 		iterator erase (iterator first, iterator last)
